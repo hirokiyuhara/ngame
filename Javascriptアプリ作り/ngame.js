@@ -2,13 +2,18 @@ const n = 5;
 let node_Body = document.getElementsByTagName('body');
 let nBody = node_Body.item(0);
 
-for (x = 1; x <= n; x++) {
-  for (y = 1; y <= n; y++) {
+let a = [];
+for (i = 1; i <= n * n; i++) {
+  a.push(0);
+}
+
+for (x = 0; x < n; x++) {
+  for (y = 0; y < n; y++) {
     let elmDiv = document.createElement('div');
     let elmP = document.createElement('P');
     elmDiv.style.left = x * 60 + 50 + 'px';
     elmDiv.style.top = y * 60 + 50 + 'px';
-    elmP.textContent = (y - 1) * n + x;
+    elmP.textContent = a[y * n + x];
     elmDiv.append(elmP);
     nBody.append(elmDiv);
   }
