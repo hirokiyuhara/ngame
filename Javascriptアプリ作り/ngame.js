@@ -33,6 +33,11 @@ for (let x = 0; x < n; x++) {
       }
     }
 
+    //CSSで記述した文字の大きさもコードで記述する
+    elmP.style.width = s + 'px';
+    elmP.style.height = s + 'px';
+    elmP.style.fontSize = s * 0.7 + 'px';
+
     elmP.textContent = r + 1;
     elmDiv.append(elmP);
     nBody.append(elmDiv);
