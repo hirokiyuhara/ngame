@@ -1,4 +1,4 @@
-const n = 5;
+const n = 4;
 let node_Body = document.getElementsByTagName('body');
 let nBody = node_Body.item(0);
 //計算式に従って枠の大きさを算出する
@@ -30,6 +30,9 @@ for (let x = 0; x < n; x++) {
     elmDiv.style.width = s + 'px';
     elmDiv.style.height = s + 'px';
 
+    //枠の角を丸くする
+    elmDiv.style.borderRadius = s + 'px';
+
     let r;
     while (1) {
       r = Math.floor(Math.random() * n * n);
@@ -43,7 +46,8 @@ for (let x = 0; x < n; x++) {
     elmP.style.width = s + 'px';
     elmP.style.height = s + 'px';
     elmP.style.lineHeight = s + 'px';
-    elmP.style.fontSize = s * 0.7 + 'px';
+    elmP.style.fontFamily = 'sans-serif';
+    elmP.style.fontSize = s * 0.6 + 'px';
 
     elmP.textContent = r + 1;
     elmDiv.append(elmP);
