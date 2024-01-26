@@ -5,8 +5,14 @@ let nBody = node_Body.item(0);
 const m = 0.3;
 let cw = document.documentElement.clientWidth;
 let ch = document.documentElement.clientHeight;
-let s = ch / ((m + 1) * (n + 1) - 1);
+//枠の大きさを画面サイズに連動させる
+let cb = cw < ch ? cw : ch; //三項演算子
+let s = cb / ((m + 1) * (n + 1) - 1);
 let g = s * m;
+//縦方向に対して画面中央に表示させる
+let oy = cw < ch ? (ch - (s + g) * n) / 2 : 0;
+//横方向に対しても画面中央に表示させる
+let ox = cw < ch ? 0 : ((s + g) * n - ch) / 2;
 
 let a = [];
 for (let i = 1; i <= n * n; i++) {
@@ -17,8 +23,8 @@ for (let x = 0; x < n; x++) {
   for (let y = 0; y < n; y++) {
     let elmDiv = document.createElement('div');
     let elmP = document.createElement('P');
-    elmDiv.style.left = x * (s + g) + g + 'px';
-    elmDiv.style.top = y * (s + g) + g + 'px';
+    elmDiv.style.left = x * (s + g) + g + ox + 'px';
+    elmDiv.style.top = y * (s + g) + g + oy + 'px';
 
     //CSSで記述した枠の大きさもコードで記述
     elmDiv.style.width = s + 'px';
@@ -36,6 +42,7 @@ for (let x = 0; x < n; x++) {
     //CSSで記述した文字の大きさもコードで記述する
     elmP.style.width = s + 'px';
     elmP.style.height = s + 'px';
+    elmP.style.lineHeight = s + 'px';
     elmP.style.fontSize = s * 0.7 + 'px';
 
     elmP.textContent = r + 1;
