@@ -1,4 +1,4 @@
-const n = 4;
+const n = 5;
 let node_Body = document.getElementsByTagName('body');
 let nBody = node_Body.item(0);
 //計算式に従って枠の大きさを算出する
@@ -13,6 +13,7 @@ let g = s * m;
 let oy = cw < ch ? (ch - (s + g) * n) / 2 : 0;
 //横方向に対しても画面中央に表示させる
 let ox = cw < ch ? 0 : ((s + g) * n - ch) / 2;
+let nID = 0;
 
 let a = [];
 for (let i = 1; i <= n * n; i++) {
@@ -48,13 +49,20 @@ for (let x = 0; x < n; x++) {
     elmP.style.lineHeight = s + 'px';
     elmP.style.fontFamily = 'sans-serif';
     elmP.style.fontSize = s * 0.6 + 'px';
-
     elmP.textContent = r + 1;
+    //イベントリスナーを登録する
+    elmDiv.className = 'number-' + (r + 1); // 'number-' を追加して、CSSのクラスとしてより適切に
+    elmDiv.addEventListener('click', nClick);
     elmDiv.append(elmP);
     nBody.append(elmDiv);
   }
 }
 
+function nClick(e) {
+  this.style.display = 'none';
+  nID = this.className;
+  console.log('Hello,' + nID);
+}
 //関数を作成した場合
 // for (let i = 1; i <= n * n; i++) {
 //   const x = ((i - 1) % n) + 1;
