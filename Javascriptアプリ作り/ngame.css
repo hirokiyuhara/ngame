@@ -1,6 +1,5 @@
 div {
   position: absolute;
-
   background-color: yellow;
   border: 1px solid red;
 }
@@ -8,10 +7,6 @@ div {
 p {
   margin: 0;
   padding: 0;
-  font-size: 35px;
-  width: 50px;
-  height: 50px;
   color: saddlebrown;
-  line-height: 50px;
   text-align: center;
 }
