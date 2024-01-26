@@ -14,6 +14,9 @@ let oy = cw < ch ? (ch - (s + g) * n) / 2 : 0;
 //横方向に対しても画面中央に表示させる
 let ox = cw < ch ? 0 : ((s + g) * n - ch) / 2;
 let nID = 0;
+//タッチの検出
+let supportTouch = 'ontouchend' in document;
+let EVENTNAME_TOUCHSTART = supportTouch ? 'touchstart' : 'mousedown';
 
 let a = [];
 for (let i = 1; i <= n * n; i++) {
@@ -52,7 +55,7 @@ for (let x = 0; x < n; x++) {
     elmP.textContent = r + 1;
     //イベントリスナーを登録する
     elmDiv.className = 'number-' + (r + 1); // 'number-' を追加して、CSSのクラスとしてより適切に
-    elmDiv.addEventListener('click', nClick);
+    elmDiv.addEventListener(EVENTNAME_TOUCHSTART, nClick);
     elmDiv.append(elmP);
     nBody.append(elmDiv);
   }
