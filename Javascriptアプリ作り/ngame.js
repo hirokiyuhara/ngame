@@ -75,7 +75,9 @@ function nClick(e) {
   //順番通りのタップで消えるようにする
   if (nID === tID) {
     tID += 1;
-    this.animate(
+
+    //アニメーション終了イベント
+    let dmyAnime = this.animate(
       [
         // 開始状態: 通常の大きさで不透明、回転なし
         { opacity: '1', transform: 'scale(1) rotate(0deg)' },
@@ -89,6 +91,9 @@ function nClick(e) {
         duration: 500,
       }
     );
+    dmyAnime.addEventListener('finish', (event) => {
+      nBody.removeChild(this);
+    });
   }
 }
 
