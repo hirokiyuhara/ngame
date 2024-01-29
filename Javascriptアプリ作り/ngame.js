@@ -76,6 +76,8 @@ function nClick(e) {
   if (nID === tID) {
     tID += 1;
 
+    //addEventListener自体の削除
+    this.removeEventListener(EVENTNAME_TOUCHSTART, nClick);
     //アニメーション終了イベント
     // let dmyAnime = this.animate(
     this.animate(
@@ -88,14 +90,22 @@ function nClick(e) {
       {
         //終了時の状態で止める
         fill: 'forwards',
-        //200ミリ秒(=0.2秒)かけてアニメーション
-        duration: 500,
+        //500ミリ秒(=0.5秒)かけてアニメーション
+        duration: 1500,
       }
     ).onfinish = (event) => {
       nBody.removeChild(this);
     };
     // dmyAnime.addEventListener('finish', (event) => {
     //   nBody.removeChild(this);
+  } else {
+    this.animate(
+      { backgroundColor: ['red', 'yellow'] },
+      {
+        fill: 'forwards',
+        duration: 200,
+      }
+    );
   }
 }
 
