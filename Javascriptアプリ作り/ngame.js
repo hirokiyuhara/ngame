@@ -1,4 +1,4 @@
-const n = 5;
+const n = 3;
 let node_Body = document.getElementsByTagName('body');
 let nBody = node_Body.item(0);
 //計算式に従って枠の大きさを算出する
@@ -12,11 +12,14 @@ let g = s * m;
 //縦方向に対して画面中央に表示させる
 let oy = cw < ch ? (ch - (s + g) * n) / 2 : 0;
 //横方向に対しても画面中央に表示させる
-let ox = cw < ch ? 0 : ((s + g) * n - ch) / 2;
+let ox = cw > ch ? (cw - (s + g) * n) / 2 : 0;
+
 let nID = 0;
 //タッチの検出
 let supportTouch = 'ontouchend' in document;
 let EVENTNAME_TOUCHSTART = supportTouch ? 'touchstart' : 'mousedown';
+document.addEventListener('touchmove', disableScroll, { passive: false });
+document.addEventListener('mousewheel', disableScroll, { passive: false });
 
 let a = [];
 for (let i = 1; i <= n * n; i++) {
@@ -66,6 +69,12 @@ function nClick(e) {
   nID = this.className;
   console.log('Hello,' + nID);
 }
+
+//スクロールを禁止にする関数
+function disableScroll(event) {
+  event.preventDefault();
+}
+
 //関数を作成した場合
 // for (let i = 1; i <= n * n; i++) {
 //   const x = ((i - 1) % n) + 1;
