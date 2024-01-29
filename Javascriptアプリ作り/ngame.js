@@ -1,4 +1,4 @@
-const n = 3;
+const n = 4;
 let node_Body = document.getElementsByTagName('body');
 let nBody = node_Body.item(0);
 //計算式に従って枠の大きさを算出する
@@ -71,7 +71,7 @@ let tID = 1;
 
 function nClick(e) {
   // this.style.display = 'none';
-  nID = this.className;
+  let nID = parseInt(this.className.replace('number-', ''), 10);
   //順番通りのタップで消えるようにする
   if (nID === tID) {
     tID += 1;
