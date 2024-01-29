@@ -68,9 +68,20 @@ for (let x = 0; x < n; x++) {
 }
 
 function nClick(e) {
-  this.style.display = 'none';
+  // this.style.display = 'none';
   nID = this.className;
-  console.log('Hello,' + nID);
+  this.animate(
+    {
+      //背景色を透明にしていく
+      opacity: ['1', '0'],
+    },
+    {
+      //終了時の状態で止める
+      fill: 'forwards',
+      //200ミリ秒(=3秒)かけてアニメーション
+      duration: 200,
+    }
+  );
 }
 
 //スクロールを禁止にする関数
