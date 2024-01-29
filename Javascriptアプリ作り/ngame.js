@@ -67,23 +67,29 @@ for (let x = 0; x < n; x++) {
   }
 }
 
+let tID = 1;
+
 function nClick(e) {
   // this.style.display = 'none';
   nID = this.className;
-  this.animate(
-    [
-      // 開始状態: 通常の大きさで不透明、回転なし
-      { opacity: '1', transform: 'scale(1) rotate(0deg)' },
-      // 終了状態: 完全に透明で、サイズが0、360度回転
-      { opacity: '0', transform: 'scale(0) rotate(360deg)' },
-    ],
-    {
-      //終了時の状態で止める
-      fill: 'forwards',
-      //200ミリ秒(=0.2秒)かけてアニメーション
-      duration: 500,
-    }
-  );
+  //順番通りのタップで消えるようにする
+  if (nID === tID) {
+    tID += 1;
+    this.animate(
+      [
+        // 開始状態: 通常の大きさで不透明、回転なし
+        { opacity: '1', transform: 'scale(1) rotate(0deg)' },
+        // 終了状態: 完全に透明で、サイズが0、360度回転
+        { opacity: '0', transform: 'scale(0) rotate(360deg)' },
+      ],
+      {
+        //終了時の状態で止める
+        fill: 'forwards',
+        //200ミリ秒(=0.2秒)かけてアニメーション
+        duration: 500,
+      }
+    );
+  }
 }
 
 //スクロールを禁止にする関数
