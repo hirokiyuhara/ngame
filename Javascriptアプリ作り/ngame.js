@@ -38,7 +38,9 @@ for (let x = 0; x < n; x++) {
     elmDiv.style.height = s + 'px';
 
     //枠の角を丸くする
-    elmDiv.style.borderRadius = s + 'px';
+    elmDiv.style.borderRadius = s * m + 'px';
+
+    setStyleDiv(elmDiv);
 
     let r;
     while (1) {
@@ -55,6 +57,7 @@ for (let x = 0; x < n; x++) {
     elmP.style.lineHeight = s + 'px';
     elmP.style.fontFamily = 'sans-serif';
     elmP.style.fontSize = s * 0.6 + 'px';
+    setStyleP(elmP);
     elmP.textContent = r + 1;
     //イベントリスナーを登録する
     elmDiv.className = 'number-' + (r + 1); // 'number-' を追加して、CSSのクラスとしてより適切に
@@ -73,6 +76,19 @@ function nClick(e) {
 //スクロールを禁止にする関数
 function disableScroll(event) {
   event.preventDefault();
+}
+
+function setStyleDiv(elm) {
+  elm.style.position = 'absolute';
+  elm.style.backgroundColor = 'yellow';
+  elm.style.border = '1px solid red';
+}
+
+function setStyleP(elm) {
+  elm.style.margin = '0';
+  elm.style.padding = '0';
+  elm.style.color = 'saddlebrown';
+  elm.style.textAlign = 'center';
 }
 
 //関数を作成した場合
