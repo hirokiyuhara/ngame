@@ -71,10 +71,12 @@ function nClick(e) {
   // this.style.display = 'none';
   nID = this.className;
   this.animate(
-    {
-      //背景色を透明にしていく
-      opacity: ['1', '0'],
-    },
+    [
+      // 開始状態: 通常の大きさで不透明
+      { opacity: '1', transform: 'scale(1)' },
+      // 終了状態: 完全に透明で、サイズが0
+      { opacity: '0', transform: 'scale(0)' },
+    ],
     {
       //終了時の状態で止める
       fill: 'forwards',
