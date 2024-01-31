@@ -29,16 +29,16 @@ for (let i = 1; i <= n * n; i++) {
 for (let x = 0; x < n; x++) {
   for (let y = 0; y < n; y++) {
     // //枠の表示
-    // let elmDiv = document.createElement('div');
+    let elmDiv = document.createElement('div');
     let elmP = document.createElement('P');
-    // elmDiv.style.left = x * (s + g) + g + ox + 'px';
-    // elmDiv.style.top = y * (s + g) + g + oy + 'px';
-    // //CSSで記述した枠の大きさもコードで記述
-    // elmDiv.style.width = s + 'px';
-    // elmDiv.style.height = s + 'px';
-    // //枠の角を丸くする
-    // elmDiv.style.borderRadius = s * m + 'px';
-    // setStyleDiv(elmDiv);
+    elmDiv.style.left = Math.random() * (cw - s) + 'px';
+    elmDiv.style.top = Math.random() * (ch - s) + 'px';
+    //CSSで記述した枠の大きさもコードで記述
+    elmDiv.style.width = s + 'px';
+    elmDiv.style.height = s + 'px';
+    //枠の角を丸くする
+    elmDiv.style.borderRadius = s / 2 + 'px';
+    setStyleDiv(elmDiv);
 
     let r;
     while (1) {
@@ -50,8 +50,6 @@ for (let x = 0; x < n; x++) {
     }
 
     //CSSで記述した文字の大きさもコードで記述する
-    elmP.style.left = Math.random() * (cw - s) + 'px';
-    elmP.style.top = Math.random() * (ch - s) + 'px';
     elmP.style.width = s + 'px';
     elmP.style.height = s + 'px';
     elmP.style.lineHeight = s + 'px';
@@ -60,10 +58,10 @@ for (let x = 0; x < n; x++) {
     setStyleP(elmP);
     elmP.textContent = r + 1;
     //イベントリスナーを登録する
-    elmP.className = 'number-' + (r + 1); // 'number-' を追加して、CSSのクラスとしてより適切に
-    elmP.addEventListener(EVENTNAME_TOUCHSTART, nClick);
-    // elmDiv.append(elmP);
-    nBody.append(elmP);
+    elmDiv.className = 'number-' + (r + 1); // 'number-' を追加して、CSSのクラスとしてより適切に
+    elmDiv.addEventListener(EVENTNAME_TOUCHSTART, nClick);
+    elmDiv.append(elmP);
+    nBody.append(elmDiv);
   }
 }
 
@@ -102,9 +100,9 @@ function nClick(e) {
   } else {
     this.animate(
       [
-        { transform: 'scale(1)', color: 'red' }, // 開始状態: 通常の大きさ、赤色
-        { transform: 'scale(3)', color: 'red' }, // 中間状態: 大きさを3倍に、赤色
-        { transform: 'scale(1)', color: 'black' }, // 終了状態: 元の大きさに戻す、黒色
+        { transform: 'scale(1)', backgroundColor: 'red' }, // 開始状態: 通常の大きさ、赤色
+        { transform: 'scale(3)', backgroundColor: 'red' }, // 中間状態: 大きさを3倍に、赤色
+        { transform: 'scale(1)', backgroundColor: 'yellow' }, // 終了状態: 元の大きさに戻す、黒色
       ],
       {
         fill: 'forwards',
@@ -126,7 +124,6 @@ function setStyleDiv(elm) {
 }
 
 function setStyleP(elm) {
-  elm.style.position = 'absolute';
   elm.style.margin = '0';
   elm.style.padding = '0';
   elm.style.color = 'black';
