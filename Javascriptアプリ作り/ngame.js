@@ -28,19 +28,17 @@ for (let i = 1; i <= n * n; i++) {
 
 for (let x = 0; x < n; x++) {
   for (let y = 0; y < n; y++) {
-    let elmDiv = document.createElement('div');
+    // //枠の表示
+    // let elmDiv = document.createElement('div');
     let elmP = document.createElement('P');
-    elmDiv.style.left = x * (s + g) + g + ox + 'px';
-    elmDiv.style.top = y * (s + g) + g + oy + 'px';
-
-    //CSSで記述した枠の大きさもコードで記述
-    elmDiv.style.width = s + 'px';
-    elmDiv.style.height = s + 'px';
-
-    //枠の角を丸くする
-    elmDiv.style.borderRadius = s * m + 'px';
-
-    setStyleDiv(elmDiv);
+    // elmDiv.style.left = x * (s + g) + g + ox + 'px';
+    // elmDiv.style.top = y * (s + g) + g + oy + 'px';
+    // //CSSで記述した枠の大きさもコードで記述
+    // elmDiv.style.width = s + 'px';
+    // elmDiv.style.height = s + 'px';
+    // //枠の角を丸くする
+    // elmDiv.style.borderRadius = s * m + 'px';
+    // setStyleDiv(elmDiv);
 
     let r;
     while (1) {
@@ -52,6 +50,8 @@ for (let x = 0; x < n; x++) {
     }
 
     //CSSで記述した文字の大きさもコードで記述する
+    elmP.style.left = x * (s + g) + g + ox + 'px';
+    elmP.style.top = y * (s + g) + g + oy + 'px';
     elmP.style.width = s + 'px';
     elmP.style.height = s + 'px';
     elmP.style.lineHeight = s + 'px';
@@ -60,10 +60,10 @@ for (let x = 0; x < n; x++) {
     setStyleP(elmP);
     elmP.textContent = r + 1;
     //イベントリスナーを登録する
-    elmDiv.className = 'number-' + (r + 1); // 'number-' を追加して、CSSのクラスとしてより適切に
-    elmDiv.addEventListener(EVENTNAME_TOUCHSTART, nClick);
-    elmDiv.append(elmP);
-    nBody.append(elmDiv);
+    // elmDiv.className = 'number-' + (r + 1); // 'number-' を追加して、CSSのクラスとしてより適切に
+    // elmDiv.addEventListener(EVENTNAME_TOUCHSTART, nClick);
+    // elmDiv.append(elmP);
+    nBody.append(elmP);
   }
 }
 
@@ -122,6 +122,7 @@ function setStyleDiv(elm) {
 }
 
 function setStyleP(elm) {
+  elm.style.position = 'absolute';
   elm.style.margin = '0';
   elm.style.padding = '0';
   elm.style.color = 'saddlebrown';
