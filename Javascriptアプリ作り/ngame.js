@@ -1,4 +1,4 @@
-const n = 4;
+const n = 8;
 let node_Body = document.getElementsByTagName('body');
 let nBody = node_Body.item(0);
 //計算式に従って枠の大きさを算出する
@@ -98,6 +98,7 @@ function nClick(e) {
     };
     // dmyAnime.addEventListener('finish', (event) => {
     //   nBody.removeChild(this);
+    //間違えた場合の処理
   } else {
     this.animate(
       { backgroundColor: ['red', 'yellow'] },
