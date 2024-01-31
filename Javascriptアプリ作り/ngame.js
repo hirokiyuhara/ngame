@@ -50,8 +50,8 @@ for (let x = 0; x < n; x++) {
     }
 
     //CSSで記述した文字の大きさもコードで記述する
-    elmP.style.left = x * (s + g) + g + ox + 'px';
-    elmP.style.top = y * (s + g) + g + oy + 'px';
+    elmP.style.left = Math.random() * (cw - s) + 'px';
+    elmP.style.top = Math.random() * (ch - s) + 'px';
     elmP.style.width = s + 'px';
     elmP.style.height = s + 'px';
     elmP.style.lineHeight = s + 'px';
