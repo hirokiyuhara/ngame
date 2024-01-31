@@ -1,4 +1,4 @@
-const n = 8;
+const n = 3;
 let node_Body = document.getElementsByTagName('body');
 let nBody = node_Body.item(0);
 //計算式に従って枠の大きさを算出する
@@ -60,8 +60,8 @@ for (let x = 0; x < n; x++) {
     setStyleP(elmP);
     elmP.textContent = r + 1;
     //イベントリスナーを登録する
-    // elmDiv.className = 'number-' + (r + 1); // 'number-' を追加して、CSSのクラスとしてより適切に
-    // elmDiv.addEventListener(EVENTNAME_TOUCHSTART, nClick);
+    elmP.className = 'number-' + (r + 1); // 'number-' を追加して、CSSのクラスとしてより適切に
+    elmP.addEventListener(EVENTNAME_TOUCHSTART, nClick);
     // elmDiv.append(elmP);
     nBody.append(elmP);
   }
@@ -101,7 +101,11 @@ function nClick(e) {
     //間違えた場合の処理
   } else {
     this.animate(
-      { backgroundColor: ['red', 'yellow'] },
+      [
+        { transform: 'scale(1)', color: 'red' }, // 開始状態: 通常の大きさ、赤色
+        { transform: 'scale(3)', color: 'red' }, // 中間状態: 大きさを3倍に、赤色
+        { transform: 'scale(1)', color: 'black' }, // 終了状態: 元の大きさに戻す、黒色
+      ],
       {
         fill: 'forwards',
         duration: 200,
@@ -125,7 +129,7 @@ function setStyleP(elm) {
   elm.style.position = 'absolute';
   elm.style.margin = '0';
   elm.style.padding = '0';
-  elm.style.color = 'saddlebrown';
+  elm.style.color = 'black';
   elm.style.textAlign = 'center';
 }
 
