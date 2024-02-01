@@ -1,4 +1,4 @@
-const n = 5;
+const n = 9;
 let node_Body = document.getElementsByTagName('body');
 let nBody = node_Body.item(0);
 //計算式に従って枠の大きさを算出する
@@ -29,11 +29,33 @@ document.addEventListener('mousewheel', disableScroll, { passive: false });
 // for (let x = 0; x < n; x++) {//縦横の座標を基にしたループ
 //   for (let y = 0; y < n; y++) {
 for (i = 0; i < n * n; i++) {
+  let rX, rY; // rXとrYをwhileループの外で宣言
+  //無限ループの作成
+  while (1) {
+    let elmExist = false;
+    //座標の乱数を変数に格納
+    rX = Math.random() * (cw - s);
+    rY = Math.random() * (ch - s);
+    //二重ループ作成
+    for (j = 0; j <= 1; j++) {
+      for (k = 0; k <= 1; k++) {
+        //画面上の特定の点にある要素を取得する
+        let elementAtPoint = document.elementFromPoint(rX + s * j, rY + s * k);
+        if (elementAtPoint && elementAtPoint.tagName == 'P') {
+          //要素がDIVであれば無限ループ終了
+          elmExist = true;
+        }
+      }
+    }
+    if (elmExist == false) {
+      break; // ループを抜ける
+    }
+  }
   // //枠の表示
   let elmDiv = document.createElement('div');
   let elmP = document.createElement('P');
-  elmDiv.style.left = Math.random() * (cw - s) + 'px';
-  elmDiv.style.top = Math.random() * (ch - s) + 'px';
+  elmDiv.style.left = rX + 'px';
+  elmDiv.style.top = rY + 'px';
   //CSSで記述した枠の大きさもコードで記述
   elmDiv.style.width = s + 'px';
   elmDiv.style.height = s + 'px';
