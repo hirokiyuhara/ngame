@@ -29,26 +29,37 @@ document.addEventListener('mousewheel', disableScroll, { passive: false });
 // for (let x = 0; x < n; x++) {//縦横の座標を基にしたループ
 //   for (let y = 0; y < n; y++) {
 for (i = 0; i < n * n; i++) {
+  let dmyCount = 0;
+  let dmyS = s;
   let rX, rY; // rXとrYをwhileループの外で宣言
   //無限ループの作成
   while (1) {
+    dmyCount++;
     let elmExist = false;
     //座標の乱数を変数に格納
-    rX = Math.random() * (cw - s);
-    rY = Math.random() * (ch - s);
+    rX = Math.random() * (cw - dmyS);
+    rY = Math.random() * (ch - dmyS);
     //二重ループ作成
-    for (j = 0; j <= 1; j++) {
-      for (k = 0; k <= 1; k++) {
+    for (j = 0; j <= 2; j++) {
+      for (k = 0; k <= 2; k++) {
         //画面上の特定の点にある要素を取得する
-        let elementAtPoint = document.elementFromPoint(rX + s * j, rY + s * k);
+        let elementAtPoint = document.elementFromPoint(
+          rX + (dmyS * j) / 2,
+          rY + (dmyS * k) / 2
+        );
         if (elementAtPoint && elementAtPoint.tagName == 'P') {
-          //要素がDIVであれば無限ループ終了
+          //要素がPであれば無限ループ終了
           elmExist = true;
         }
       }
     }
     if (elmExist == false) {
       break; // ループを抜ける
+    }
+    if (1000 < dmyCount) {
+      //break;
+      dmyS *= 0.98;
+      dmyCount = 0;
     }
   }
   // //枠の表示
@@ -57,10 +68,10 @@ for (i = 0; i < n * n; i++) {
   elmDiv.style.left = rX + 'px';
   elmDiv.style.top = rY + 'px';
   //CSSで記述した枠の大きさもコードで記述
-  elmDiv.style.width = s + 'px';
-  elmDiv.style.height = s + 'px';
+  elmDiv.style.width = dmyS + 'px';
+  elmDiv.style.height = dmyS + 'px';
   //枠の角を丸くする
-  elmDiv.style.borderRadius = s / 2 + 'px';
+  elmDiv.style.borderRadius = dmyS / 2 + 'px';
   setStyleDiv(elmDiv);
 
   //未選択の位置をランダムに選ぶ処理➁
@@ -74,11 +85,11 @@ for (i = 0; i < n * n; i++) {
   // }
 
   //CSSで記述した文字の大きさもコードで記述する
-  elmP.style.width = s + 'px';
-  elmP.style.height = s + 'px';
-  elmP.style.lineHeight = s + 'px';
+  elmP.style.width = dmyS + 'px';
+  elmP.style.height = dmyS + 'px';
+  elmP.style.lineHeight = dmyS + 'px';
   elmP.style.fontFamily = 'sans-serif';
-  elmP.style.fontSize = s * 0.6 + 'px';
+  elmP.style.fontSize = dmyS * 0.6 + 'px';
   setStyleP(elmP);
   elmP.textContent = i + 1;
   //イベントリスナーを登録する
