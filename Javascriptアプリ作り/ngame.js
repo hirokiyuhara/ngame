@@ -1,4 +1,4 @@
-const n = 9;
+const n = 5;
 let node_Body = document.getElementsByTagName('body');
 let nBody = node_Body.item(0);
 nBody.style.overflow = 'hidden';
@@ -19,6 +19,7 @@ let nID = 0;
 let rX = [];
 let rY = [];
 let rS = [];
+let rN = [];
 //タッチの検出
 let supportTouch = 'ontouchend' in document;
 let EVENTNAME_TOUCHSTART = supportTouch ? 'touchstart' : 'mousedown';
@@ -32,6 +33,9 @@ document.addEventListener('mousewheel', disableScroll, { passive: false });
 
 // for (let x = 0; x < n; x++) {//縦横の座標を基にしたループ
 //   for (let y = 0; y < n; y++) {
+for (i = 0; i < n * n; i++) {
+  rN.push(i + 1);
+}
 for (i = 0; i < n * n; i++) {
   let dmyCount = 0;
   let dmyS = s;
@@ -47,10 +51,10 @@ for (i = 0; i < n * n; i++) {
     //配列を回すループ
     for (j = 0; j < rX.length; j++) {
       if (
-        rX[j] - s < dmyX &&
-        dmyX < rX[j] + s &&
-        rY[j] - s < dmyY &&
-        dmyY < rY[j] + s
+        rX[j] - s <= dmyX &&
+        dmyX <= rX[j] + s &&
+        rY[j] - s <= dmyY &&
+        dmyY <= rY[j] + s
       ) {
         elmExist = true;
       }
@@ -112,18 +116,17 @@ for (i = 0; i < n * n; i++) {
   elmP.style.fontFamily = 'sans-serif';
   elmP.style.fontSize = dmyS * 0.6 + 'px';
   setStyleP(elmP);
-  elmP.textContent = i + 1;
+  elmP.textContent = rN[i];
   //イベントリスナーを登録する
-  elmDiv.className = 'number-' + (i + 1); // 'number-' を追加して、CSSのクラスとしてより適切に
+  elmDiv.className = 'number-' + rN[i]; // 'number-' を追加して、CSSのクラスとしてより適切に
   elmDiv.addEventListener(EVENTNAME_TOUCHSTART, nClick);
   elmDiv.append(elmP);
   nBody.append(elmDiv);
 }
 //   }
 // }
-
+//タッチの判定
 let tID = 1;
-
 function nClick(e) {
   // this.style.display = 'none';
   let nID = parseInt(this.className.replace('number-', ''), 10);
