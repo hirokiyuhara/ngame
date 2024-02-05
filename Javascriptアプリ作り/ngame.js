@@ -1,4 +1,4 @@
-const n = 5;
+let n = 25;
 let node_Body = document.getElementsByTagName('body');
 let nBody = node_Body.item(0);
 nBody.style.overflow = 'hidden';
@@ -8,7 +8,7 @@ let cw = document.documentElement.clientWidth;
 let ch = document.documentElement.clientHeight;
 //枠の大きさを画面サイズに連動させる
 let cb = cw < ch ? cw : ch; //三項演算子
-let s = cb / ((m + 1) * (n + 1) - 1);
+let s = cb / ((m + 1) * (Math.sqrt(n) + 1) - 1);
 let g = s * m;
 //縦方向に対して画面中央に表示させる
 let oy = cw < ch ? (ch - (s + g) * n) / 2 : 0;
@@ -33,10 +33,15 @@ document.addEventListener('mousewheel', disableScroll, { passive: false });
 
 // for (let x = 0; x < n; x++) {//縦横の座標を基にしたループ
 //   for (let y = 0; y < n; y++) {
-for (i = 0; i < n * n; i++) {
+let dmyN = Math.floor(Math.random() * n);
+for (i = 0; i < n; i++) {
+  if (i === dmyN) {
+    rN.push(i + 1);
+  }
   rN.push(i + 1);
 }
-for (i = 0; i < n * n; i++) {
+n = rN.length;
+for (i = 0; i < n; i++) {
   let dmyCount = 0;
   let dmyS = s;
   let dmyX, dmyY; // rXとrYをwhileループの外で宣言
