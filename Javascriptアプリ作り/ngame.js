@@ -90,21 +90,24 @@ for (i = 0; i < n; i++) {
       dmyCount = 0;
     }
   }
-  // //枠の表示
-  let elmDiv = document.createElement('div');
-  let elmP = document.createElement('P');
-  elmDiv.style.left = dmyX + 'px';
-  elmDiv.style.top = dmyY + 'px';
-  //CSSで記述した枠の大きさもコードで記述
-  elmDiv.style.width = dmyS + 'px';
-  elmDiv.style.height = dmyS + 'px';
-  //枠の角を丸くする
-  elmDiv.style.borderRadius = dmyS / 2 + 'px';
-  setStyleDiv(elmDiv);
   //配列の追加
   rX.push(dmyX);
   rY.push(dmyY);
   rS.push(dmyS);
+  draw(dmyX, dmyY, dmyS, rN[i]);
+}
+function draw(x, y, s, n) {
+  // //枠の表示
+  let elmDiv = document.createElement('div');
+  let elmP = document.createElement('P');
+  elmDiv.style.left = x + 'px';
+  elmDiv.style.top = y + 'px';
+  //CSSで記述した枠の大きさもコードで記述
+  elmDiv.style.width = s + 'px';
+  elmDiv.style.height = s + 'px';
+  //枠の角を丸くする
+  elmDiv.style.borderRadius = s / 2 + 'px';
+  setStyleDiv(elmDiv);
 
   //未選択の位置をランダムに選ぶ処理➁
   // let r;
@@ -117,15 +120,15 @@ for (i = 0; i < n; i++) {
   // }
 
   //CSSで記述した文字の大きさもコードで記述する
-  elmP.style.width = dmyS + 'px';
-  elmP.style.height = dmyS + 'px';
-  elmP.style.lineHeight = dmyS + 'px';
+  elmP.style.width = s + 'px';
+  elmP.style.height = s + 'px';
+  elmP.style.lineHeight = s + 'px';
   elmP.style.fontFamily = 'sans-serif';
-  elmP.style.fontSize = dmyS * 0.6 + 'px';
+  elmP.style.fontSize = s * 0.6 + 'px';
   setStyleP(elmP);
-  elmP.textContent = rN[i];
+  elmP.textContent = n;
   //イベントリスナーを登録する
-  elmDiv.className = 'number-' + rN[i]; // 'number-' を追加して、CSSのクラスとしてより適切に
+  elmDiv.className = 'number-' + n; // 'number-' を追加して、CSSのクラスとしてより適切に
   elmDiv.addEventListener(EVENTNAME_TOUCHSTART, nClick);
   elmDiv.append(elmP);
   nBody.append(elmDiv);
