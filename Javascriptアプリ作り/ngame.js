@@ -40,6 +40,14 @@ for (i = 0; i < n; i++) {
 //配列操作
 //rN.splice(dmyN, 0, dmyN + 1);
 n = rN.length;
+//並べ替え 二重ループ
+for (i = n - 1; 0 < i; i--) {
+  for (j = 0; j < i; j++) {
+    if (rN[j + 1] < rN[j]) {
+      rN.splice(j, 2, rN[j + 1], rN[j]);
+    }
+  }
+}
 //数字の重なり判断
 for (i = 0; i < n; i++) {
   let dmyCount = 0;
