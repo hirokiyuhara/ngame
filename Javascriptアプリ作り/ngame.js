@@ -133,12 +133,14 @@ for (i = 0; i < n; i++) {
 //   }
 // }
 //タッチの判定
-let tID = 1;
+let tID = 0;
 function nClick(e) {
   // this.style.display = 'none';
   let nID = parseInt(this.className.replace('number-', ''), 10);
   //順番通りのタップで消えるようにする
-  if (nID === tID) {
+  // if (nID === tID) {
+  //タッチの順番を対応させる
+  if (nID === rN[tID]) {
     tID += 1;
 
     //addEventListener自体の削除
