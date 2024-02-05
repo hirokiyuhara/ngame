@@ -1,6 +1,7 @@
 const n = 9;
 let node_Body = document.getElementsByTagName('body');
 let nBody = node_Body.item(0);
+nBody.style.overflow = 'hidden';
 //計算式に従って枠の大きさを算出する
 const m = 0.3;
 let cw = document.documentElement.clientWidth;
@@ -13,8 +14,11 @@ let g = s * m;
 let oy = cw < ch ? (ch - (s + g) * n) / 2 : 0;
 //横方向に対しても画面中央に表示させる
 let ox = cw > ch ? (cw - (s + g) * n) / 2 : 0;
-
 let nID = 0;
+//演算用の変数
+let rX = [];
+let rY = [];
+let rS = [];
 //タッチの検出
 let supportTouch = 'ontouchend' in document;
 let EVENTNAME_TOUCHSTART = supportTouch ? 'touchstart' : 'mousedown';
@@ -31,48 +35,65 @@ document.addEventListener('mousewheel', disableScroll, { passive: false });
 for (i = 0; i < n * n; i++) {
   let dmyCount = 0;
   let dmyS = s;
-  let rX, rY; // rXとrYをwhileループの外で宣言
+  let dmyX, dmyY; // rXとrYをwhileループの外で宣言
   //無限ループの作成
   while (1) {
     dmyCount++;
     let elmExist = false;
     //座標の乱数を変数に格納
-    rX = Math.random() * (cw - dmyS);
-    rY = Math.random() * (ch - dmyS);
-    //二重ループ作成
-    for (j = 0; j <= 2; j++) {
-      for (k = 0; k <= 2; k++) {
-        //画面上の特定の点にある要素を取得する
-        let elementAtPoint = document.elementFromPoint(
-          rX + (dmyS * j) / 2,
-          rY + (dmyS * k) / 2
-        );
-        if (elementAtPoint && elementAtPoint.tagName == 'P') {
-          //要素がPであれば無限ループ終了
-          elmExist = true;
-        }
+    dmyX = Math.floor(Math.random() * (cw - dmyS));
+    dmyY = Math.floor(Math.random() * (ch - dmyS));
+
+    //配列を回すループ
+    for (j = 0; j < rX.length; j++) {
+      if (
+        rX[j] - s < dmyX &&
+        dmyX < rX[j] + s &&
+        rY[j] - s < dmyY &&
+        dmyY < rY[j] + s
+      ) {
+        elmExist = true;
       }
     }
+
+    //二重ループ作成。座標によって数字があるか判断するコード
+    // for (j = 0; j <= 2; j++) {
+    //   for (k = 0; k <= 2; k++) {
+    //     //画面上の特定の点にある要素を取得する
+    //     let elementAtPoint = document.elementFromPoint(
+    //       rX + (dmyS * j) / 2,
+    //       rY + (dmyS * k) / 2
+    //     );
+    //     if (elementAtPoint && elementAtPoint.tagName == 'P') {
+    //       //要素がPであれば無限ループ終了
+    //       elmExist = true;
+    //     }
+    //   }
+    // }
     if (elmExist == false) {
       break; // ループを抜ける
     }
     if (1000 < dmyCount) {
       //break;
-      dmyS *= 0.98;
+      dmyS *= 0.99;
       dmyCount = 0;
     }
   }
   // //枠の表示
   let elmDiv = document.createElement('div');
   let elmP = document.createElement('P');
-  elmDiv.style.left = rX + 'px';
-  elmDiv.style.top = rY + 'px';
+  elmDiv.style.left = dmyX + 'px';
+  elmDiv.style.top = dmyY + 'px';
   //CSSで記述した枠の大きさもコードで記述
   elmDiv.style.width = dmyS + 'px';
   elmDiv.style.height = dmyS + 'px';
   //枠の角を丸くする
   elmDiv.style.borderRadius = dmyS / 2 + 'px';
   setStyleDiv(elmDiv);
+  //配列の追加
+  rX.push(dmyX);
+  rY.push(dmyY);
+  rS.push(dmyS);
 
   //未選択の位置をランダムに選ぶ処理➁
   // let r;
@@ -124,7 +145,7 @@ function nClick(e) {
       {
         //終了時の状態で止める
         fill: 'forwards',
-        //500ミリ秒(=0.5秒)かけてアニメーション
+        //1500ミリ秒(=0.5秒)かけてアニメーション
         duration: 1500,
       }
     ).onfinish = (event) => {
