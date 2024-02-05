@@ -35,11 +35,13 @@ document.addEventListener('mousewheel', disableScroll, { passive: false });
 //   for (let y = 0; y < n; y++) {
 let dmyN = Math.floor(Math.random() * n);
 for (i = 0; i < n; i++) {
-  if (i === dmyN) {
-    rN.push(i + 1);
-  }
+  // if (i === dmyN) {
+  //   rN.push(i + 1);
+  // }
   rN.push(i + 1);
 }
+//配列操作
+rN.splice(dmyN, 0, dmyN + 1);
 n = rN.length;
 for (i = 0; i < n; i++) {
   let dmyCount = 0;
