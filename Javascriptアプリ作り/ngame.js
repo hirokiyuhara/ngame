@@ -3,18 +3,17 @@ let node_Body = document.getElementsByTagName('body');
 let nBody = node_Body.item(0);
 nBody.style.overflow = 'hidden';
 //計算式に従って枠の大きさを算出する
-const m = 0.3;
 let cw = document.documentElement.clientWidth;
 let ch = document.documentElement.clientHeight;
 //枠の大きさを画面サイズに連動させる
 let cb = cw < ch ? cw : ch; //三項演算子
-let s = cb / ((m + 1) * (Math.sqrt(n) + 1) - 1);
-let g = s * m;
-//縦方向に対して画面中央に表示させる
-let oy = cw < ch ? (ch - (s + g) * n) / 2 : 0;
-//横方向に対しても画面中央に表示させる
-let ox = cw > ch ? (cw - (s + g) * n) / 2 : 0;
-let nID = 0;
+let s = cb / (1.3 * (Math.sqrt(n) + 1) - 1);
+// let g = s * m;
+// //縦方向に対して画面中央に表示させる
+// let oy = cw < ch ? (ch - (s + g) * n) / 2 : 0;
+// //横方向に対しても画面中央に表示させる
+// let ox = cw > ch ? (cw - (s + g) * n) / 2 : 0;
+// let nID = 0;
 //演算用の変数
 let rX = [];
 let rY = [];
@@ -30,19 +29,18 @@ document.addEventListener('mousewheel', disableScroll, { passive: false });
 // for (let i = 1; i <= n * n; i++) {
 //   a.push(0);
 // }
-
 // for (let x = 0; x < n; x++) {//縦横の座標を基にしたループ
 //   for (let y = 0; y < n; y++) {
-let dmyN = Math.floor(Math.random() * n);
+
+//ダブり数字作成
 for (i = 0; i < n; i++) {
-  // if (i === dmyN) {
-  //   rN.push(i + 1);
-  // }
-  rN.push(i + 1);
+  let dmyN = Math.floor(Math.random() * n);
+  rN.push(dmyN + 1);
 }
 //配列操作
-rN.splice(dmyN, 0, dmyN + 1);
+//rN.splice(dmyN, 0, dmyN + 1);
 n = rN.length;
+//数字の重なり判断
 for (i = 0; i < n; i++) {
   let dmyCount = 0;
   let dmyS = s;
@@ -90,12 +88,14 @@ for (i = 0; i < n; i++) {
       dmyCount = 0;
     }
   }
-  //配列の追加
+  //格納・配列の追加
   rX.push(dmyX);
   rY.push(dmyY);
   rS.push(dmyS);
+  //表示呼び出し
   draw(dmyX, dmyY, dmyS, rN[i]);
 }
+//表示
 function draw(x, y, s, n) {
   // //枠の表示
   let elmDiv = document.createElement('div');
@@ -107,8 +107,9 @@ function draw(x, y, s, n) {
   elmDiv.style.height = s + 'px';
   //枠の角を丸くする
   elmDiv.style.borderRadius = s / 2 + 'px';
-  setStyleDiv(elmDiv);
-
+  elmDiv.style.position = 'absolute';
+  elmDiv.style.backgroundColor = 'yellow';
+  elmDiv.style.border = '1px solid red';
   //未選択の位置をランダムに選ぶ処理➁
   // let r;
   // while (1) {
@@ -125,7 +126,10 @@ function draw(x, y, s, n) {
   elmP.style.lineHeight = s + 'px';
   elmP.style.fontFamily = 'sans-serif';
   elmP.style.fontSize = s * 0.6 + 'px';
-  setStyleP(elmP);
+  elmP.style.margin = '0';
+  elmP.style.padding = '0';
+  elmP.style.color = 'black';
+  elmP.style.textAlign = 'center';
   elmP.textContent = n;
   //イベントリスナーを登録する
   elmDiv.className = 'number-' + n; // 'number-' を追加して、CSSのクラスとしてより適切に
@@ -188,20 +192,6 @@ function nClick(e) {
 function disableScroll(event) {
   event.preventDefault();
 }
-
-function setStyleDiv(elm) {
-  elm.style.position = 'absolute';
-  elm.style.backgroundColor = 'yellow';
-  elm.style.border = '1px solid red';
-}
-
-function setStyleP(elm) {
-  elm.style.margin = '0';
-  elm.style.padding = '0';
-  elm.style.color = 'black';
-  elm.style.textAlign = 'center';
-}
-
 //関数を作成した場合
 // for (let i = 1; i <= n * n; i++) {
 //   const x = ((i - 1) % n) + 1;
