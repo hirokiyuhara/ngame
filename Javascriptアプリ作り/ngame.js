@@ -125,7 +125,7 @@ for (i = 0; i < n; i++) {
 }
 
 //何秒おきに動くかの記述
-setInterval(update, 10);
+const timer = setInterval(update, 10);
 function update() {
   for (i = 0; i < n; i++) {
     rX[i] += vS[i] * Math.cos(vA[i]);
@@ -198,8 +198,6 @@ function nClick(e) {
   // if (nID === tID) {
   //タッチの順番を対応させる
   if (nID === rN[tID]) {
-    tID += 1;
-
     //addEventListener自体の削除
     this.removeEventListener(EVENTNAME_TOUCHSTART, nClick);
     //アニメーション終了イベント
@@ -209,7 +207,7 @@ function nClick(e) {
         // 開始状態: 通常の大きさで不透明、回転なし
         { opacity: '1', transform: 'scale(1) rotate(0deg)' },
         // 終了状態: 完全に透明で、サイズが0、360度回転
-        { opacity: '0', transform: 'scale(0) rotate(360deg)' },
+        { opacity: '1', transform: 'scale(0) rotate(360deg)' },
       ],
       {
         //終了時の状態で止める
@@ -218,8 +216,12 @@ function nClick(e) {
         duration: 1500,
       }
     ).onfinish = (event) => {
-      nBody.removeChild(this);
+      // nBody.removeChild(this);
+      if (tID === n) {
+        clearInterval(timer);
+      }
     };
+    tID += 1;
     // dmyAnime.addEventListener('finish', (event) => {
     //   nBody.removeChild(this);
     //間違えた場合の処理
