@@ -1,4 +1,4 @@
-let Na = 8;
+let Na = 5;
 let n = Na * Na;
 let node_Body = document.getElementsByTagName('body');
 let nBody = node_Body.item(0);
@@ -9,6 +9,7 @@ let ch = document.documentElement.clientHeight;
 //枠の大きさを画面サイズに連動させる
 let cb = cw < ch ? cw : ch; //三項演算子
 let s = cb / (1.3 * (Math.sqrt(n) + 1) - 1);
+let bw = 1;
 // let g = s * m;
 // //縦方向に対して画面中央に表示させる
 // let oy = cw < ch ? (ch - (s + g) * n) / 2 : 0;
@@ -129,9 +130,15 @@ function update() {
   for (i = 0; i < n; i++) {
     rX[i] += vS[i] * Math.cos(vA[i]);
     rY[i] += vS[i] * Math.sin(vA[i]);
+    //両端に着いたときに跳ね返る
     if (rX[i] <= 0 || cw <= rX[i] + rS[i]) {
       vA[i] = Math.PI - vA[i];
     }
+    //上下の端に着いたときに跳ね返る
+    if (rY[i] <= 0 || ch <= rY[i] + rS[i]) {
+      vA[i] *= -1;
+    }
+
     let dmyElm = document.getElementsByTagName('div');
     dmyElm[i].style.left = rX[i] + 'px';
     dmyElm[i].style.top = rY[i] + 'px';
@@ -146,13 +153,13 @@ function draw(x, y, s, n) {
   elmDiv.style.left = x + 'px';
   elmDiv.style.top = y + 'px';
   //CSSで記述した枠の大きさもコードで記述
-  elmDiv.style.width = s + 'px';
-  elmDiv.style.height = s + 'px';
+  elmDiv.style.width = s - 2 * bw + 'px';
+  elmDiv.style.height = s - 2 * bw + 'px';
   //枠の角を丸くする
-  elmDiv.style.borderRadius = s / 2 + 'px';
+  elmDiv.style.borderRadius = (s - 2 * bw) / 2 + 'px';
   elmDiv.style.position = 'absolute';
   elmDiv.style.backgroundColor = 'yellow';
-  elmDiv.style.border = '1px solid red';
+  elmDiv.style.border = bw + 'px solid red';
   //未選択の位置をランダムに選ぶ処理➁
   // let r;
   // while (1) {
@@ -164,9 +171,9 @@ function draw(x, y, s, n) {
   // }
 
   //CSSで記述した文字の大きさもコードで記述する
-  elmP.style.width = s + 'px';
-  elmP.style.height = s + 'px';
-  elmP.style.lineHeight = s + 'px';
+  elmP.style.width = s - 2 * bw + 'px';
+  elmP.style.height = s - 2 * bw + 'px';
+  elmP.style.lineHeight = s - 2 * bw + 'px';
   elmP.style.fontFamily = 'sans-serif';
   elmP.style.fontSize = s * 0.6 + 'px';
   elmP.style.margin = '0';
