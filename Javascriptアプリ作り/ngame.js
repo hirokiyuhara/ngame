@@ -63,8 +63,8 @@ rN.sort((a, b) => a - b);
 for (i = 0; i < n; i++) {
   let dmyS = Math.random();
   let dmyV = Math.random() * 2 * Math.PI;
-  vS.push();
-  vS.push();
+  vS.push(dmyS);
+  vA.push(dmyV);
 }
 
 //数字の重なり判断
@@ -122,8 +122,18 @@ for (i = 0; i < n; i++) {
   //表示呼び出し
   draw(dmyX, dmyY, dmyS, rN[i]);
 }
+
 //何秒おきに動くかの記述
-setInterval(update, 1000);
+setInterval(update, 10);
+function update() {
+  for (i = 0; i < n; i++) {
+    rX[i] += vS[i] * Math.cos(vA[i]);
+    rY[i] += vS[i] * Math.sin(vA[i]);
+    let dmyElm = document.getElementsByTagName('div');
+    dmyElm[i].style.left = rX[i] + 'px';
+    dmyElm[i].style.top = rY[i] + 'px';
+  }
+}
 
 //表示
 function draw(x, y, s, n) {
