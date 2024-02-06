@@ -62,7 +62,7 @@ rN.sort((a, b) => a - b);
 
 //速度設定
 for (i = 0; i < n; i++) {
-  let dmyS = Math.random();
+  let dmyS = Math.random() / 5 + 0.2;
   let dmyV = Math.random() * 2 * Math.PI;
   vS.push(dmyS);
   vA.push(dmyV);
