@@ -1,4 +1,5 @@
-let n = 25;
+let Na = 8;
+let n = Na * Na;
 let node_Body = document.getElementsByTagName('body');
 let nBody = node_Body.item(0);
 nBody.style.overflow = 'hidden';
@@ -19,6 +20,9 @@ let rX = [];
 let rY = [];
 let rS = [];
 let rN = [];
+let vS = [];
+let vA = [];
+
 //タッチの検出
 let supportTouch = 'ontouchend' in document;
 let EVENTNAME_TOUCHSTART = supportTouch ? 'touchstart' : 'mousedown';
@@ -40,7 +44,7 @@ for (i = 0; i < n; i++) {
 //配列操作
 //rN.splice(dmyN, 0, dmyN + 1);
 n = rN.length;
-//並べ替え 二重ループ
+//並べ替え バブルソートのアルゴリズムを使用して配列rNを並べ替える
 // for (i = n - 1; 0 < i; i--) {
 //   for (j = 0; j < i; j++) {
 //     if (rN[j + 1] < rN[j]) {
@@ -48,12 +52,21 @@ n = rN.length;
 //     }
 //   }
 // }
-//並び替え記述➁
+//並び替え記述➁ Array.sortメソッドを使用
 // rN.sort(function (a, b) {
 //   return a - b;
 // });
-//並び替え記述➂
+//並び替え記述➂ ES6のアロー関数を使用したArray.sortメソッド
 rN.sort((a, b) => a - b);
+
+//速度設定
+for (i = 0; i < n; i++) {
+  let dmyS = Math.random();
+  let dmyV = Math.random() * 2 * Math.PI;
+  vS.push();
+  vS.push();
+}
+
 //数字の重なり判断
 for (i = 0; i < n; i++) {
   let dmyCount = 0;
@@ -109,6 +122,7 @@ for (i = 0; i < n; i++) {
   //表示呼び出し
   draw(dmyX, dmyY, dmyS, rN[i]);
 }
+
 //表示
 function draw(x, y, s, n) {
   // //枠の表示
