@@ -122,6 +122,8 @@ for (i = 0; i < n; i++) {
   //表示呼び出し
   draw(dmyX, dmyY, dmyS, rN[i]);
 }
+//何秒おきに動くかの記述
+setInterval(update, 1000);
 
 //表示
 function draw(x, y, s, n) {
