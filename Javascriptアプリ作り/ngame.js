@@ -1,4 +1,4 @@
-let Na = 5;
+let Na = 8;
 let n = Na * Na;
 let node_Body = document.getElementsByTagName('body');
 let nBody = node_Body.item(0);
@@ -130,18 +130,36 @@ function update() {
   for (i = 0; i < n; i++) {
     rX[i] += vS[i] * Math.cos(vA[i]);
     rY[i] += vS[i] * Math.sin(vA[i]);
+  }
+
+  for (j = 0; j < n; j++) {
     //両端に着いたときに跳ね返る
-    if (rX[i] <= 0 || cw <= rX[i] + rS[i]) {
-      vA[i] = Math.PI - vA[i];
+    if (rX[j] <= 0 || cw <= rX[j] + rS[j]) {
+      vA[j] = Math.PI - vA[j];
     }
     //上下の端に着いたときに跳ね返る
-    if (rY[i] <= 0 || ch <= rY[i] + rS[i]) {
-      vA[i] *= -1;
+    if (rY[j] <= 0 || ch <= rY[j] + rS[j]) {
+      vA[j] *= -1;
     }
-
+    //衝突判断
+    for (let i = 0; i < n; i++) {
+      if (i !== j) {
+        let dmyDist = Math.sqrt(
+          (rX[i] + rS[i] / 2 - (rX[j] + rS[j] / 2)) ** 2 +
+            (rY[i] + rS[i] / 2 - (rY[j] + rS[j] / 2)) ** 2
+        );
+        if (dmyDist <= rS[i] / 2 + rS[j] / 2) {
+          let dmyAngle = Math.atan2(
+            rY[j] + rS[j] / 2 - (rY[i] + rS[i] / 2),
+            rX[i] + rS[i] / 2 - (rX[j] + rS[j] / 2)
+          );
+          vA[j] = Math.PI - dmyAngle;
+        }
+      }
+    }
     let dmyElm = document.getElementsByTagName('div');
-    dmyElm[i].style.left = rX[i] + 'px';
-    dmyElm[i].style.top = rY[i] + 'px';
+    dmyElm[j].style.left = rX[j] + 'px';
+    dmyElm[j].style.top = rY[j] + 'px';
   }
 }
 
@@ -207,7 +225,7 @@ function nClick(e) {
         // 開始状態: 通常の大きさで不透明、回転なし
         { opacity: '1', transform: 'scale(1) rotate(0deg)' },
         // 終了状態: 完全に透明で、サイズが0、360度回転
-        { opacity: '1', transform: 'scale(1) rotate(360deg)' },
+        { opacity: '1', transform: 'scale(0) rotate(360deg)' },
       ],
       {
         //終了時の状態で止める
@@ -219,6 +237,8 @@ function nClick(e) {
       // nBody.removeChild(this);
       if (tID === n) {
         clearInterval(timer);
+        // メッセージを表示する
+        document.getElementById('message').textContent = 'Finish!!';
       }
     };
     tID += 1;
