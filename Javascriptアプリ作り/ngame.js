@@ -129,6 +129,9 @@ function update() {
   for (i = 0; i < n; i++) {
     rX[i] += vS[i] * Math.cos(vA[i]);
     rY[i] += vS[i] * Math.sin(vA[i]);
+    if (rX[i] <= 0 || cw <= rX[i] + rS[i]) {
+      vA[i] = Math.PI - vA[i];
+    }
     let dmyElm = document.getElementsByTagName('div');
     dmyElm[i].style.left = rX[i] + 'px';
     dmyElm[i].style.top = rY[i] + 'px';
