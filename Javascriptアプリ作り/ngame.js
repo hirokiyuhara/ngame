@@ -135,13 +135,21 @@ function update() {
   }
 
   for (j = 0; j < n; j++) {
-    //両端に着いたときに跳ね返る
-    if (rX[j] <= 0 || cw <= rX[j] + rS[j]) {
-      dX[j] = -1;
+    //左側に着いたときに跳ね返る
+    if (rX[j] <= 0) {
+      dX[j] = Math.abs(dX[j]);
     }
-    //上下の端に着いたときに跳ね返る
-    if (rY[j] <= 0 || ch <= rY[j] + rS[j]) {
-      dY[j] *= -1;
+    //右側に着いたときに跳ね返る
+    if (cw <= rX[j] + rS[j]) {
+      dX[j] = -Math.abs(dX[j]);
+    }
+    //上側に着いたときに跳ね返る
+    if (rY[j] <= 0) {
+      dY[j] = Math.abs(dY[j]);
+    }
+    //下側に着いたときに跳ね返る
+    if (ch <= rY[j] + rS[j]) {
+      dY[j] = -Math.abs(dY[j]);
     }
     //衝突判断
     for (let i = 0; i < n; i++) {
@@ -154,8 +162,8 @@ function update() {
           const nx = dx / dmyDist;
           const ny = dy / dmyDist;
           const overlap = rS[j] / 2 + rS[i] / 2 - dmyDist;
-          dX[j] += -(nx * overlap) / 1;
-          dY[j] += -(ny * overlap) / 1;
+          dX[j] += (-nx * overlap) / 1;
+          dY[j] += (-ny * overlap) / 1;
         }
       }
     }
