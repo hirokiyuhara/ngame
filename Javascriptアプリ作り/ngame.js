@@ -145,17 +145,17 @@ function update() {
     }
     //衝突判断
     for (let i = 0; i < n; i++) {
+      const dx = rX[i] + rS[i] / 2 - (rX[j] + rS[j] / 2);
+      const dy = rY[i] + rS[i] / 2 - (rY[j] + rS[j] / 2);
       if (i !== j) {
-        let dmyDist = Math.sqrt(
-          (rX[i] + rS[i] / 2 - (rX[j] + rS[j] / 2)) ** 2 +
-            (rY[i] + rS[i] / 2 - (rY[j] + rS[j] / 2)) ** 2
-        );
+        let dmyDist = Math.sqrt(dx ** 2 + dy ** 2);
         if (dmyDist <= rS[i] / 2 + rS[j] / 2) {
-          let dmyAngle = Math.atan2(
-            rY[j] + rS[j] / 2 - (rY[i] + rS[i] / 2),
-            rX[i] + rS[i] / 2 - (rX[j] + rS[j] / 2)
-          );
-          // vA[j] = Math.PI - dmyAngle;
+          // let dmyAngle = Math.atan2(dx, dy);
+          const nx = dx / dmyDist;
+          const ny = dy / dmyDist;
+          const overlap = rS[j] / 2 + rS[i] / 2 - dmyDist;
+          dX[j] += -(nx * overlap) / 1;
+          dY[j] += -(ny * overlap) / 1;
         }
       }
     }
