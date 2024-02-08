@@ -1,15 +1,15 @@
 let Na = 8;
 let n = Na * Na;
-let node_Body = document.getElementsByTagName('body');
-let nBody = node_Body.item(0);
+const node_Body = document.getElementsByTagName('body');
+const nBody = node_Body.item(0);
 nBody.style.overflow = 'hidden';
 //計算式に従って枠の大きさを算出する
-let cw = document.documentElement.clientWidth;
-let ch = document.documentElement.clientHeight;
+const cw = document.documentElement.clientWidth;
+const ch = document.documentElement.clientHeight;
 //枠の大きさを画面サイズに連動させる
-let cb = cw < ch ? cw : ch; //三項演算子
-let s = cb / (1.3 * (Math.sqrt(n) + 1) - 1);
-let bw = 1;
+const cb = cw < ch ? cw : ch; //三項演算子
+const s = cb / (1.3 * (Math.sqrt(n) + 1) - 1);
+const bw = 1;
 // let g = s * m;
 // //縦方向に対して画面中央に表示させる
 // let oy = cw < ch ? (ch - (s + g) * n) / 2 : 0;
@@ -21,8 +21,8 @@ let rX = [];
 let rY = [];
 let rS = [];
 let rN = [];
-let vS = [];
-let vA = [];
+let dX = [];
+let dY = [];
 
 //タッチの検出
 let supportTouch = 'ontouchend' in document;
@@ -39,7 +39,7 @@ document.addEventListener('mousewheel', disableScroll, { passive: false });
 
 //ダブり数字作成
 for (i = 0; i < n; i++) {
-  let dmyN = Math.floor(Math.random() * n);
+  const dmyN = Math.floor(Math.random() * n);
   rN.push(dmyN + 1);
 }
 //配列操作
@@ -62,10 +62,12 @@ rN.sort((a, b) => a - b);
 
 //速度設定
 for (i = 0; i < n; i++) {
-  let dmyS = Math.random() / 5 + 0.2;
-  let dmyV = Math.random() * 2 * Math.PI;
-  vS.push(dmyS);
-  vA.push(dmyV);
+  const dmyS = Math.random() / 5 + 0.2;
+  const dmyA = Math.random() * 2 * Math.PI;
+  const dmyDX = dmyS * Math.cos(dmyA);
+  const dmyDY = dmyS * Math.sin(dmyA);
+  dX.push(dmyDX);
+  dY.push(dmyDY);
 }
 
 //数字の重なり判断
@@ -128,18 +130,18 @@ for (i = 0; i < n; i++) {
 const timer = setInterval(update, 10);
 function update() {
   for (i = 0; i < n; i++) {
-    rX[i] += vS[i] * Math.cos(vA[i]);
-    rY[i] += vS[i] * Math.sin(vA[i]);
+    rX[i] += dX[i];
+    rY[i] += dY[i];
   }
 
   for (j = 0; j < n; j++) {
     //両端に着いたときに跳ね返る
     if (rX[j] <= 0 || cw <= rX[j] + rS[j]) {
-      vA[j] = Math.PI - vA[j];
+      dX[j] = -1;
     }
     //上下の端に着いたときに跳ね返る
     if (rY[j] <= 0 || ch <= rY[j] + rS[j]) {
-      vA[j] *= -1;
+      dY[j] *= -1;
     }
     //衝突判断
     for (let i = 0; i < n; i++) {
@@ -153,7 +155,7 @@ function update() {
             rY[j] + rS[j] / 2 - (rY[i] + rS[i] / 2),
             rX[i] + rS[i] / 2 - (rX[j] + rS[j] / 2)
           );
-          vA[j] = Math.PI - dmyAngle;
+          // vA[j] = Math.PI - dmyAngle;
         }
       }
     }
@@ -166,8 +168,8 @@ function update() {
 //表示
 function draw(x, y, s, n) {
   // //枠の表示
-  let elmDiv = document.createElement('div');
-  let elmP = document.createElement('P');
+  const elmDiv = document.createElement('div');
+  const elmP = document.createElement('P');
   elmDiv.style.left = x + 'px';
   elmDiv.style.top = y + 'px';
   //CSSで記述した枠の大きさもコードで記述
