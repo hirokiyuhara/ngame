@@ -82,7 +82,37 @@ class Ball {
     this.x += this.dx;
     this.y += this.dy;
   }
+  checkCollision(target) {
+    //左側に着いたときに跳ね返る
+    if (this.x <= 0) {
+      this.dx = Math.abs(this.dx);
+    }
+    //右側に着いたときに跳ね返る
+    if (cw <= this.x + this.s) {
+      this.dx = -Math.abs(this.dx);
+    }
+    //上側に着いたときに跳ね返る
+    if (this.y <= 0) {
+      this.dy = Math.abs(this.dy);
+    }
+    //下側に着いたときに跳ね返る
+    if (ch <= this.y + this.s) {
+      this.dy = -Math.abs(this.dy);
+    }
+    const dx = target.x + target.s / 2 - (this.x + this.s / 2);
+    const dy = target.y + target.s / 2 - (this.y + this.s / 2);
+    let dmyDist = Math.sqrt(dx ** 2 + dy ** 2);
+    if (dmyDist <= this.s / 2 + target.s / 2) {
+      // let dmyAngle = Math.atan2(dx, dy);
+      const nx = dx / dmyDist;
+      const ny = dy / dmyDist;
+      const overlap = this.s / 2 + target.s / 2 - dmyDist;
+      this.dx += (-nx * overlap) / 1;
+      this.dy += (-ny * overlap) / 1;
+    }
+  }
 }
+
 //ダブり数字作成
 for (i = 0; i < n; i++) {
   const dmyN = Math.floor(Math.random() * n);
@@ -184,38 +214,40 @@ function update() {
     // rY[i] += dY[i];
     balls[i].move();
   }
-
+  //画面の上下左右への衝突
   for (j = 0; j < n; j++) {
-    //左側に着いたときに跳ね返る
-    if (rX[j] <= 0) {
-      dX[j] = Math.abs(dX[j]);
-    }
-    //右側に着いたときに跳ね返る
-    if (cw <= rX[j] + rS[j]) {
-      dX[j] = -Math.abs(dX[j]);
-    }
-    //上側に着いたときに跳ね返る
-    if (rY[j] <= 0) {
-      dY[j] = Math.abs(dY[j]);
-    }
-    //下側に着いたときに跳ね返る
-    if (ch <= rY[j] + rS[j]) {
-      dY[j] = -Math.abs(dY[j]);
-    }
+    // //左側に着いたときに跳ね返る
+    // if (rX[j] <= 0) {
+    //   dX[j] = Math.abs(dX[j]);
+    // }
+    // //右側に着いたときに跳ね返る
+    // if (cw <= rX[j] + rS[j]) {
+    //   dX[j] = -Math.abs(dX[j]);
+    // }
+    // //上側に着いたときに跳ね返る
+    // if (rY[j] <= 0) {
+    //   dY[j] = Math.abs(dY[j]);
+    // }
+    // //下側に着いたときに跳ね返る
+    // if (ch <= rY[j] + rS[j]) {
+    //   dY[j] = -Math.abs(dY[j]);
+    // }
+
     //衝突判断
     for (let i = 0; i < n; i++) {
-      const dx = rX[i] + rS[i] / 2 - (rX[j] + rS[j] / 2);
-      const dy = rY[i] + rS[i] / 2 - (rY[j] + rS[j] / 2);
+      // const dx = rX[i] + rS[i] / 2 - (rX[j] + rS[j] / 2);
+      // const dy = rY[i] + rS[i] / 2 - (rY[j] + rS[j] / 2);
       if (i !== j) {
-        let dmyDist = Math.sqrt(dx ** 2 + dy ** 2);
-        if (dmyDist <= rS[i] / 2 + rS[j] / 2) {
-          // let dmyAngle = Math.atan2(dx, dy);
-          const nx = dx / dmyDist;
-          const ny = dy / dmyDist;
-          const overlap = rS[j] / 2 + rS[i] / 2 - dmyDist;
-          dX[j] += (-nx * overlap) / 1;
-          dY[j] += (-ny * overlap) / 1;
-        }
+        //   let dmyDist = Math.sqrt(dx ** 2 + dy ** 2);
+        //   if (dmyDist <= rS[i] / 2 + rS[j] / 2) {
+        //     // let dmyAngle = Math.atan2(dx, dy);
+        //     const nx = dx / dmyDist;
+        //     const ny = dy / dmyDist;
+        //     const overlap = rS[j] / 2 + rS[i] / 2 - dmyDist;
+        //     dX[j] += (-nx * overlap) / 1;
+        //     dY[j] += (-ny * overlap) / 1;
+        //   }
+        balls[j].checkCollision(balls[i]);
       }
     }
     let dmyElm = document.getElementsByTagName('div');
