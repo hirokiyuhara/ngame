@@ -37,6 +37,48 @@ document.addEventListener('mousewheel', disableScroll, { passive: false });
 // for (let x = 0; x < n; x++) {//縦横の座標を基にしたループ
 //   for (let y = 0; y < n; y++) {
 
+//Classに書き換え
+class Ball {
+  constructor(x, y, n, dx, dy) {
+    this.x = x;
+    this.y = y;
+    this.s = s;
+    this.n = n;
+    this.dx = dx;
+    this.dy = dy;
+    this.elmDiv = document.createElement('div');
+    this.elmP = document.createElement('p');
+    this.draw();
+  }
+  draw() {
+    this.elmDiv.style.left = this.x + 'px';
+    this.elmDiv.style.top = this.y + 'px';
+    //CSSで記述した枠の大きさもコードで記述
+    this.elmDiv.style.width = this.s - 2 * bw + 'px';
+    this.elmDiv.style.height = this.s - 2 * bw + 'px';
+    //枠の角を丸くする
+    this.elmDiv.style.borderRadius = (this.s - 2 * bw) / 2 + 'px';
+    this.elmDiv.style.position = 'absolute';
+    this.elmDiv.style.backgroundColor = 'yellow';
+    this.elmDiv.style.border = bw + 'px solid red';
+    //CSSで記述した文字の大きさもコードで記述する
+    this.elmP.style.width = this.s - 2 * bw + 'px';
+    this.elmP.style.height = this.s - 2 * bw + 'px';
+    this.elmP.style.lineHeight = this.s - 2 * bw + 'px';
+    this.elmP.style.fontFamily = 'sans-serif';
+    this.elmP.style.fontSize = this.s * 0.6 + 'px';
+    this.elmP.style.margin = '0';
+    this.elmP.style.padding = '0';
+    this.elmP.style.color = 'black';
+    this.elmP.style.textAlign = 'center';
+    this.elmP.textContent = this.n;
+    //イベントリスナーを登録する
+    this.elmDiv.className = 'number-' + this.n; // 'number-' を追加して、CSSのクラスとしてより適切に
+    // elmDiv.addEventListener(EVENTNAME_TOUCHSTART, nClick);
+    this.elmDiv.append(this.elmP);
+    nBody.append(this.elmDiv);
+  }
+}
 //ダブり数字作成
 for (i = 0; i < n; i++) {
   const dmyN = Math.floor(Math.random() * n);
@@ -123,11 +165,14 @@ for (i = 0; i < n; i++) {
   rY.push(dmyY);
   rS.push(dmyS);
   //表示呼び出し
-  draw(dmyX, dmyY, dmyS, rN[i]);
+  // draw(dmyX, dmyY, dmyS, rN[i]);
+}
+for (i = 0; i < n; i++) {
+  let ball = new Ball(rX[i], rY[i], rN[i], dX[i], dY[i]);
 }
 
 //何秒おきに動くかの記述
-const timer = setInterval(update, 10);
+const timer = setInterval(update, 5);
 function update() {
   for (i = 0; i < n; i++) {
     rX[i] += dX[i];
