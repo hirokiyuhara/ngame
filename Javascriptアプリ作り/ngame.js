@@ -1,4 +1,4 @@
-let Na = 8;
+let Na = 5;
 let n = Na * Na;
 const node_Body = document.getElementsByTagName('body');
 const nBody = node_Body.item(0);
@@ -17,6 +17,7 @@ const bw = 1;
 // let ox = cw > ch ? (cw - (s + g) * n) / 2 : 0;
 // let nID = 0;
 //演算用の変数
+let nID = 0;
 let rX = [];
 let rY = [];
 let rS = [];
@@ -39,7 +40,7 @@ document.addEventListener('mousewheel', disableScroll, { passive: false });
 
 //Classに書き換え
 class Ball {
-  constructor(x, y, n, dx, dy) {
+  constructor(x, y, s, n, dx, dy) {
     this.x = x;
     this.y = y;
     this.s = s;
@@ -49,19 +50,19 @@ class Ball {
     this.elmDiv = document.createElement('div');
     this.elmP = document.createElement('p');
     this.draw();
+    this.handleTouchBound = this.handleTouch.bind(this);
+    this.elmDiv.addEventListener(EVENTNAME_TOUCHSTART, this.handleTouchBound);
   }
+
   draw() {
     this.elmDiv.style.left = this.x + 'px';
     this.elmDiv.style.top = this.y + 'px';
-    //CSSで記述した枠の大きさもコードで記述
     this.elmDiv.style.width = this.s - 2 * bw + 'px';
     this.elmDiv.style.height = this.s - 2 * bw + 'px';
-    //枠の角を丸くする
     this.elmDiv.style.borderRadius = (this.s - 2 * bw) / 2 + 'px';
     this.elmDiv.style.position = 'absolute';
     this.elmDiv.style.backgroundColor = 'yellow';
     this.elmDiv.style.border = bw + 'px solid red';
-    //CSSで記述した文字の大きさもコードで記述する
     this.elmP.style.width = this.s - 2 * bw + 'px';
     this.elmP.style.height = this.s - 2 * bw + 'px';
     this.elmP.style.lineHeight = this.s - 2 * bw + 'px';
@@ -71,44 +72,85 @@ class Ball {
     this.elmP.style.padding = '0';
     this.elmP.style.color = 'black';
     this.elmP.style.textAlign = 'center';
-    this.elmP.textContent = this.n;
-    //イベントリスナーを登録する
-    this.elmDiv.className = 'number-' + this.n; // 'number-' を追加して、CSSのクラスとしてより適切に
-    // elmDiv.addEventListener(EVENTNAME_TOUCHSTART, nClick);
+    this.elmP.textContent = Math.round(this.n);
+    this.elmDiv.className = 'number-' + this.n;
     this.elmDiv.append(this.elmP);
     nBody.append(this.elmDiv);
   }
+
   move() {
     this.x += this.dx;
     this.y += this.dy;
+    this.checkBounds();
   }
-  checkCollision(target) {
-    //左側に着いたときに跳ね返る
+
+  checkBounds() {
+    // 左側に着いたときに跳ね返る
     if (this.x <= 0) {
       this.dx = Math.abs(this.dx);
     }
-    //右側に着いたときに跳ね返る
+    // 右側に着いたときに跳ね返る
     if (cw <= this.x + this.s) {
       this.dx = -Math.abs(this.dx);
     }
-    //上側に着いたときに跳ね返る
+    // 上側に着いたときに跳ね返る
     if (this.y <= 0) {
       this.dy = Math.abs(this.dy);
     }
-    //下側に着いたときに跳ね返る
+    // 下側に着いたときに跳ね返る
     if (ch <= this.y + this.s) {
       this.dy = -Math.abs(this.dy);
     }
+  }
+
+  checkCollision(target) {
     const dx = target.x + target.s / 2 - (this.x + this.s / 2);
     const dy = target.y + target.s / 2 - (this.y + this.s / 2);
-    let dmyDist = Math.sqrt(dx ** 2 + dy ** 2);
-    if (dmyDist <= this.s / 2 + target.s / 2) {
-      // let dmyAngle = Math.atan2(dx, dy);
-      const nx = dx / dmyDist;
-      const ny = dy / dmyDist;
-      const overlap = this.s / 2 + target.s / 2 - dmyDist;
+    let dist = Math.sqrt(dx ** 2 + dy ** 2);
+    if (dist <= this.s / 2 + target.s / 2) {
+      const nx = dx / dist;
+      const ny = dy / dist;
+      const overlap = this.s / 2 + target.s / 2 - dist;
       this.dx += (-nx * overlap) / 1;
       this.dy += (-ny * overlap) / 1;
+    }
+  }
+
+  handleTouch(event) {
+    event.stopPropagation();
+    const nID = parseInt(this.elmDiv.className.replace('number-', ''), 10);
+    if (nID === rN[tID]) {
+      this.elmDiv.removeEventListener(
+        EVENTNAME_TOUCHSTART,
+        this.handleTouchBound
+      );
+      this.elmDiv.animate(
+        [
+          { opacity: '1', transform: 'scale(1) rotate(0deg)' },
+          { opacity: '0', transform: 'scale(0) rotate(360deg)' },
+        ],
+        {
+          fill: 'forwards',
+          duration: 1500,
+        }
+      ).onfinish = (event) => {
+        if (tID === n) {
+          clearInterval(timer);
+        }
+      };
+      tID += 1;
+    } else {
+      this.elmDiv.animate(
+        [
+          { transform: 'scale(1)', backgroundColor: 'red' },
+          { transform: 'scale(3)', backgroundColor: 'red' },
+          { transform: 'scale(1)', backgroundColor: 'yellow' },
+        ],
+        {
+          fill: 'forwards',
+          duration: 200,
+        }
+      );
     }
   }
 }
@@ -202,7 +244,7 @@ for (i = 0; i < n; i++) {
   // draw(dmyX, dmyY, dmyS, rN[i]);
 }
 for (i = 0; i < n; i++) {
-  let ball = new Ball(rX[i], rY[i], rN[i], dX[i], dY[i]);
+  let ball = new Ball(rX[i], rY[i], rS[i], rN[i], dX[i], dY[i]);
   balls.push(ball);
 }
 
@@ -234,7 +276,7 @@ function update() {
     // }
 
     //衝突判断
-    for (let i = 0; i < n; i++) {
+    for (i = 0; i < n; i++) {
       // const dx = rX[i] + rS[i] / 2 - (rX[j] + rS[j] / 2);
       // const dy = rY[i] + rS[i] / 2 - (rY[j] + rS[j] / 2);
       if (i !== j) {
@@ -304,53 +346,51 @@ function draw(x, y, s, n) {
 let tID = 0;
 function nClick(e) {
   // this.style.display = 'none';
-  let nID = parseInt(this.className.replace('number-', ''), 10);
-  //順番通りのタップで消えるようにする
-  // if (nID === tID) {
-  //タッチの順番を対応させる
-  if (nID === rN[tID]) {
-    //addEventListener自体の削除
-    this.removeEventListener(EVENTNAME_TOUCHSTART, nClick);
-    //アニメーション終了イベント
-    // let dmyAnime = this.animate(
-    this.animate(
-      [
-        // 開始状態: 通常の大きさで不透明、回転なし
-        { opacity: '1', transform: 'scale(1) rotate(0deg)' },
-        // 終了状態: 完全に透明で、サイズが0、360度回転
-        { opacity: '1', transform: 'scale(0) rotate(360deg)' },
-      ],
-      {
-        //終了時の状態で止める
-        fill: 'forwards',
-        //1500ミリ秒(=0.5秒)かけてアニメーション
-        duration: 1500,
-      }
-    ).onfinish = (event) => {
-      // nBody.removeChild(this);
-      if (tID === n) {
-        clearInterval(timer);
-        // メッセージを表示する
-        document.getElementById('message').textContent = 'Finish!!';
-      }
-    };
-    tID += 1;
-    // dmyAnime.addEventListener('finish', (event) => {
-    //   nBody.removeChild(this);
-    //間違えた場合の処理
-  } else {
-    this.animate(
-      [
-        { transform: 'scale(1)', backgroundColor: 'red' }, // 開始状態: 通常の大きさ、赤色
-        { transform: 'scale(3)', backgroundColor: 'red' }, // 中間状態: 大きさを3倍に、赤色
-        { transform: 'scale(1)', backgroundColor: 'yellow' }, // 終了状態: 元の大きさに戻す、黒色
-      ],
-      {
-        fill: 'forwards',
-        duration: 200,
-      }
-    );
-  }
+  // let nID = parseInt(this.className.replace('number-', ''), 10);
+  // //順番通りのタップで消えるようにする
+  // // if (nID === tID) {
+  // //タッチの順番を対応させる
+  // if (nID === rN[tID]) {
+  //   //addEventListener自体の削除
+  //   this.removeEventListener(EVENTNAME_TOUCHSTART, nClick);
+  //   //アニメーション終了イベント
+  //   // let dmyAnime = this.animate(
+  //   this.animate(
+  //     [
+  //       // 開始状態: 通常の大きさで不透明、回転なし
+  //       { opacity: '1', transform: 'scale(1) rotate(0deg)' },
+  //       // 終了状態: 完全に透明で、サイズが0、360度回転
+  //       { opacity: '1', transform: 'scale(0) rotate(360deg)' },
+  //     ],
+  //     {
+  //       //終了時の状態で止める
+  //       fill: 'forwards',
+  //       //1500ミリ秒(=0.5秒)かけてアニメーション
+  //       duration: 1500,
+  //     }
+  //   ).onfinish = (event) => {
+  //     // nBody.removeChild(this);
+  //     if (tID === n) {
+  //       clearInterval(timer);
+  //     }
+  //   };
+  //   tID += 1;
+  //   // dmyAnime.addEventListener('finish', (event) => {
+  //   //   nBody.removeChild(this);
+  //   //間違えた場合の処理
+  // } else {
+  //   this.animate(
+  //     [
+  //       { transform: 'scale(1)', backgroundColor: 'red' }, // 開始状態: 通常の大きさ、赤色
+  //       { transform: 'scale(3)', backgroundColor: 'red' }, // 中間状態: 大きさを3倍に、赤色
+  //       { transform: 'scale(1)', backgroundColor: 'yellow' }, // 終了状態: 元の大きさに戻す、黒色
+  //     ],
+  //     {
+  //       fill: 'forwards',
+  //       duration: 200,
+  //     }
+  //   );
+  // }
 }
 
 //スクロールを禁止にする関数
