@@ -23,7 +23,7 @@ let rS = [];
 let rN = [];
 let dX = [];
 let dY = [];
-
+let balls = [];
 //タッチの検出
 let supportTouch = 'ontouchend' in document;
 let EVENTNAME_TOUCHSTART = supportTouch ? 'touchstart' : 'mousedown';
@@ -77,6 +77,10 @@ class Ball {
     // elmDiv.addEventListener(EVENTNAME_TOUCHSTART, nClick);
     this.elmDiv.append(this.elmP);
     nBody.append(this.elmDiv);
+  }
+  move() {
+    this.x += this.dx;
+    this.y += this.dy;
   }
 }
 //ダブり数字作成
@@ -169,14 +173,16 @@ for (i = 0; i < n; i++) {
 }
 for (i = 0; i < n; i++) {
   let ball = new Ball(rX[i], rY[i], rN[i], dX[i], dY[i]);
+  balls.push(ball);
 }
 
 //何秒おきに動くかの記述
 const timer = setInterval(update, 5);
 function update() {
   for (i = 0; i < n; i++) {
-    rX[i] += dX[i];
-    rY[i] += dY[i];
+    // rX[i] += dX[i];
+    // rY[i] += dY[i];
+    balls[i].move();
   }
 
   for (j = 0; j < n; j++) {
@@ -213,8 +219,8 @@ function update() {
       }
     }
     let dmyElm = document.getElementsByTagName('div');
-    dmyElm[j].style.left = rX[j] + 'px';
-    dmyElm[j].style.top = rY[j] + 'px';
+    dmyElm[j].style.left = balls[j].x + 'px';
+    dmyElm[j].style.top = balls[j].y + 'px';
   }
 }
 
