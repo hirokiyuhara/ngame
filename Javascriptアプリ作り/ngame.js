@@ -243,9 +243,33 @@ for (i = 0; i < n; i++) {
   //表示呼び出し
   // draw(dmyX, dmyY, dmyS, rN[i]);
 }
+//中央表示（透過）
 for (i = 0; i < n; i++) {
-  let ball = new Ball(rX[i], rY[i], rS[i], rN[i], dX[i], dY[i]);
+  let ball = new Ball(cw / 2, ch / 2, rS[i], rN[i], dX[i], dY[i]);
+  ball.elmDiv.style.opacity = '0';
   balls.push(ball);
+}
+//飛散アニメーション
+for (i = 0; i < n; i++) {
+  balls[i].elmDiv.animate(
+    {
+      opacity: ['0', '1'],
+      scale: ['0', '1'],
+      rotate: ['0deg', '720deg'],
+      left: [cw / 2 + 'px', rX[i] + 'px'],
+      top: [ch / 2 + 'px', rY[i] + 'px'],
+    },
+    {
+      fill: 'forwards',
+      duration: 1000,
+      easing: 'ease-out',
+    }
+  ).onfinish = (event) => {
+    //nBody.removeChild(this)
+    if (tID === n) {
+      clearInterval(timer);
+    }
+  };
 }
 
 //何秒おきに動くかの記述
