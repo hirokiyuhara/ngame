@@ -1,4 +1,4 @@
-let Na = 5;
+let Na = 8;
 let n = Na * Na;
 const node_Body = document.getElementsByTagName('body');
 const nBody = node_Body.item(0);
@@ -260,6 +260,7 @@ for (i = 0; i < n; i++) {
   ball.elmDiv.style.opacity = '0';
   balls.push(ball);
 }
+
 //飛散アニメーション
 let dmyElm = document.getElementsByTagName('div');
 for (let i = 0; i < n; i++) {
