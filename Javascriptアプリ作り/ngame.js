@@ -250,7 +250,8 @@ for (i = 0; i < n; i++) {
   balls.push(ball);
 }
 //飛散アニメーション
-for (i = 0; i < n; i++) {
+let dmyElm = document.getElementsByTagName('div');
+for (let i = 0; i < n; i++) {
   balls[i].elmDiv.animate(
     {
       opacity: ['0', '1'],
@@ -260,20 +261,29 @@ for (i = 0; i < n; i++) {
       top: [ch / 2 + 'px', rY[i] + 'px'],
     },
     {
-      fill: 'forwards',
+      // fill: 'forwards',
       duration: 1000,
       easing: 'ease-out',
     }
   ).onfinish = (event) => {
-    //nBody.removeChild(this)
-    if (tID === n) {
-      clearInterval(timer);
+    // //nBody.removeChild(this)
+    // if (tID === n) {
+    //   clearInterval(timer);
+    // }
+    balls[i].x = rX[i];
+    balls[i].y = rY[i];
+    balls[i].elmDiv.style.opacity = '1';
+    dmyElm[i].style.left = balls[i].x + 'px';
+    dmyElm[i].style.top = balls[i].y + 'px';
+    if (i === n - 1) {
+      timer = setInterval(update, 5);
     }
   };
 }
 
 //何秒おきに動くかの記述
-const timer = setInterval(update, 5);
+// const timer = setInterval(update, 5);
+let timer;
 function update() {
   for (i = 0; i < n; i++) {
     // rX[i] += dX[i];
@@ -316,7 +326,7 @@ function update() {
         balls[j].checkCollision(balls[i]);
       }
     }
-    let dmyElm = document.getElementsByTagName('div');
+    // let dmyElm = document.getElementsByTagName('div');
     dmyElm[j].style.left = balls[j].x + 'px';
     dmyElm[j].style.top = balls[j].y + 'px';
   }
