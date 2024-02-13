@@ -344,51 +344,59 @@ function update() {
     dmyElm[j].style.top = balls[j].y + 'px';
   }
   const currentTime = new Date();
-  elmTime.textContent = currentTime - startTime + '';
+  displayTime(currentTime - startTime);
+}
+function displayTime(t) {
+  const ms = t % 1000;
+  t = (t - ms) / 1000;
+  const s = t % 60;
+  t = (t - s) / 60;
+  const m = t;
+  elmTime.textContent = m + ':' + s + ':' + ms;
 }
 
 //表示
-function draw(x, y, s, n) {
-  // //枠の表示
-  const elmDiv = document.createElement('div');
-  const elmP = document.createElement('P');
-  elmDiv.style.left = x + 'px';
-  elmDiv.style.top = y + 'px';
-  //CSSで記述した枠の大きさもコードで記述
-  elmDiv.style.width = s - 2 * bw + 'px';
-  elmDiv.style.height = s - 2 * bw + 'px';
-  //枠の角を丸くする
-  elmDiv.style.borderRadius = (s - 2 * bw) / 2 + 'px';
-  elmDiv.style.position = 'absolute';
-  elmDiv.style.backgroundColor = 'yellow';
-  elmDiv.style.border = bw + 'px solid red';
-  //未選択の位置をランダムに選ぶ処理➁
-  // let r;
-  // while (1) {
-  //   r = Math.floor(Math.random() * n * n);
-  //   if (a[r] === 0) {
-  //     a[r] = 1;
-  //     break;
-  //   }
-  // }
+// function draw(x, y, s, n) {
+//   // //枠の表示
+//   const elmDiv = document.createElement('div');
+//   const elmP = document.createElement('P');
+//   elmDiv.style.left = x + 'px';
+//   elmDiv.style.top = y + 'px';
+//   //CSSで記述した枠の大きさもコードで記述
+//   elmDiv.style.width = s - 2 * bw + 'px';
+//   elmDiv.style.height = s - 2 * bw + 'px';
+//   //枠の角を丸くする
+//   elmDiv.style.borderRadius = (s - 2 * bw) / 2 + 'px';
+//   elmDiv.style.position = 'absolute';
+//   elmDiv.style.backgroundColor = 'yellow';
+//   elmDiv.style.border = bw + 'px solid red';
+//   //未選択の位置をランダムに選ぶ処理➁
+//   // let r;
+//   // while (1) {
+//   //   r = Math.floor(Math.random() * n * n);
+//   //   if (a[r] === 0) {
+//   //     a[r] = 1;
+//   //     break;
+//   //   }
+//   // }
 
-  //CSSで記述した文字の大きさもコードで記述する
-  elmP.style.width = s - 2 * bw + 'px';
-  elmP.style.height = s - 2 * bw + 'px';
-  elmP.style.lineHeight = s - 2 * bw + 'px';
-  elmP.style.fontFamily = 'sans-serif';
-  elmP.style.fontSize = s * 0.6 + 'px';
-  elmP.style.margin = '0';
-  elmP.style.padding = '0';
-  elmP.style.color = 'black';
-  elmP.style.textAlign = 'center';
-  elmP.textContent = n;
-  //イベントリスナーを登録する
-  elmDiv.className = 'number-' + n; // 'number-' を追加して、CSSのクラスとしてより適切に
-  elmDiv.addEventListener(EVENTNAME_TOUCHSTART, nClick);
-  elmDiv.append(elmP);
-  nBody.append(elmDiv);
-}
+//   //CSSで記述した文字の大きさもコードで記述する
+//   elmP.style.width = s - 2 * bw + 'px';
+//   elmP.style.height = s - 2 * bw + 'px';
+//   elmP.style.lineHeight = s - 2 * bw + 'px';
+//   elmP.style.fontFamily = 'sans-serif';
+//   elmP.style.fontSize = s * 0.6 + 'px';
+//   elmP.style.margin = '0';
+//   elmP.style.padding = '0';
+//   elmP.style.color = 'black';
+//   elmP.style.textAlign = 'center';
+//   elmP.textContent = n;
+//   //イベントリスナーを登録する
+//   elmDiv.className = 'number-' + n; // 'number-' を追加して、CSSのクラスとしてより適切に
+//   elmDiv.addEventListener(EVENTNAME_TOUCHSTART, nClick);
+//   elmDiv.append(elmP);
+//   nBody.append(elmDiv);
+// }
 //   }
 // }
 //タッチの判定
