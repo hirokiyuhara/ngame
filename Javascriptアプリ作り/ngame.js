@@ -25,6 +25,9 @@ let rN = [];
 let dX = [];
 let dY = [];
 let balls = [];
+let timer;
+let startTime;
+let tID = 0;
 //タッチの検出
 let supportTouch = 'ontouchend' in document;
 let EVENTNAME_TOUCHSTART = supportTouch ? 'touchstart' : 'mousedown';
@@ -156,148 +159,152 @@ class Ball {
   }
 }
 
-//ダブり数字作成
-for (i = 0; i < n; i++) {
-  const dmyN = Math.floor(Math.random() * n);
-  rN.push(dmyN + 1);
-}
-//配列操作
-//rN.splice(dmyN, 0, dmyN + 1);
-n = rN.length;
-//並べ替え バブルソートのアルゴリズムを使用して配列rNを並べ替える
-// for (i = n - 1; 0 < i; i--) {
-//   for (j = 0; j < i; j++) {
-//     if (rN[j + 1] < rN[j]) {
-//       rN.splice(j, 2, rN[j + 1], rN[j]);
-//     }
-//   }
-// }
-//並び替え記述➁ Array.sortメソッドを使用
-// rN.sort(function (a, b) {
-//   return a - b;
-// });
-//並び替え記述➂ ES6のアロー関数を使用したArray.sortメソッド
-rN.sort((a, b) => a - b);
+init();
+start();
 
-//速度設定
-for (i = 0; i < n; i++) {
-  const dmyS = Math.random() / 5 + 0.2;
-  const dmyA = Math.random() * 2 * Math.PI;
-  const dmyDX = dmyS * Math.cos(dmyA);
-  const dmyDY = dmyS * Math.sin(dmyA);
-  dX.push(dmyDX);
-  dY.push(dmyDY);
-}
+function init() {
+  //ダブり数字作成
+  for (i = 0; i < n; i++) {
+    const dmyN = Math.floor(Math.random() * n);
+    rN.push(dmyN + 1);
+  }
+  //配列操作
+  //rN.splice(dmyN, 0, dmyN + 1);
+  n = rN.length;
+  //並べ替え バブルソートのアルゴリズムを使用して配列rNを並べ替える
+  // for (i = n - 1; 0 < i; i--) {
+  //   for (j = 0; j < i; j++) {
+  //     if (rN[j + 1] < rN[j]) {
+  //       rN.splice(j, 2, rN[j + 1], rN[j]);
+  //     }
+  //   }
+  // }
+  //並び替え記述➁ Array.sortメソッドを使用
+  // rN.sort(function (a, b) {
+  //   return a - b;
+  // });
+  //並び替え記述➂ ES6のアロー関数を使用したArray.sortメソッド
+  rN.sort((a, b) => a - b);
 
-//数字の重なり判断
-for (i = 0; i < n; i++) {
-  let dmyCount = 0;
-  let dmyS = s;
-  let dmyX, dmyY; // rXとrYをwhileループの外で宣言
-  //無限ループの作成
-  while (1) {
-    dmyCount++;
-    let elmExist = false;
-    //座標の乱数を変数に格納
-    dmyX = Math.floor(Math.random() * (cw - dmyS));
-    dmyY = Math.floor(Math.random() * (ch - dmyS));
+  //速度設定
+  for (i = 0; i < n; i++) {
+    const dmyS = Math.random() / 5 + 0.2;
+    const dmyA = Math.random() * 2 * Math.PI;
+    const dmyDX = dmyS * Math.cos(dmyA);
+    const dmyDY = dmyS * Math.sin(dmyA);
+    dX.push(dmyDX);
+    dY.push(dmyDY);
+  }
 
-    //配列を回すループ
-    for (j = 0; j < rX.length; j++) {
-      if (
-        rX[j] - s <= dmyX &&
-        dmyX <= rX[j] + s &&
-        rY[j] - s <= dmyY &&
-        dmyY <= rY[j] + s
-      ) {
-        elmExist = true;
+  //数字の重なり判断
+  for (i = 0; i < n; i++) {
+    let dmyCount = 0;
+    let dmyS = s;
+    let dmyX, dmyY; // rXとrYをwhileループの外で宣言
+    //無限ループの作成
+    while (1) {
+      dmyCount++;
+      let elmExist = false;
+      //座標の乱数を変数に格納
+      dmyX = Math.floor(Math.random() * (cw - dmyS));
+      dmyY = Math.floor(Math.random() * (ch - dmyS));
+
+      //配列を回すループ
+      for (j = 0; j < rX.length; j++) {
+        if (
+          rX[j] - s <= dmyX &&
+          dmyX <= rX[j] + s &&
+          rY[j] - s <= dmyY &&
+          dmyY <= rY[j] + s
+        ) {
+          elmExist = true;
+        }
+      }
+
+      //二重ループ作成。座標によって数字があるか判断するコード
+      // for (j = 0; j <= 2; j++) {
+      //   for (k = 0; k <= 2; k++) {
+      //     //画面上の特定の点にある要素を取得する
+      //     let elementAtPoint = document.elementFromPoint(
+      //       rX + (dmyS * j) / 2,
+      //       rY + (dmyS * k) / 2
+      //     );
+      //     if (elementAtPoint && elementAtPoint.tagName == 'P') {
+      //       //要素がPであれば無限ループ終了
+      //       elmExist = true;
+      //     }
+      //   }
+      // }
+      if (elmExist == false) {
+        break; // ループを抜ける
+      }
+      if (1000 < dmyCount) {
+        //break;
+        dmyS *= 0.99;
+        dmyCount = 0;
       }
     }
-
-    //二重ループ作成。座標によって数字があるか判断するコード
-    // for (j = 0; j <= 2; j++) {
-    //   for (k = 0; k <= 2; k++) {
-    //     //画面上の特定の点にある要素を取得する
-    //     let elementAtPoint = document.elementFromPoint(
-    //       rX + (dmyS * j) / 2,
-    //       rY + (dmyS * k) / 2
-    //     );
-    //     if (elementAtPoint && elementAtPoint.tagName == 'P') {
-    //       //要素がPであれば無限ループ終了
-    //       elmExist = true;
-    //     }
-    //   }
-    // }
-    if (elmExist == false) {
-      break; // ループを抜ける
-    }
-    if (1000 < dmyCount) {
-      //break;
-      dmyS *= 0.99;
-      dmyCount = 0;
-    }
+    //格納・配列の追加
+    rX.push(dmyX);
+    rY.push(dmyY);
+    rS.push(dmyS);
+    //表示呼び出し
+    // draw(dmyX, dmyY, dmyS, rN[i]);
   }
-  //格納・配列の追加
-  rX.push(dmyX);
-  rY.push(dmyY);
-  rS.push(dmyS);
-  //表示呼び出し
-  // draw(dmyX, dmyY, dmyS, rN[i]);
 }
 
-const elmTime = document.createElement('p');
-elmTime.style.lineHeight = ch + 'px';
-elmTime.style.fontFamily = 'sans-serif';
-elmTime.style.fontSize = rS[0] * 0.6 + 'px';
-elmTime.style.margin = '0';
-elmTime.style.padding = '0';
-elmTime.style.color = 'black';
-elmTime.style.textAlign = 'center';
-nBody.append(elmTime);
-//中央表示（透過）
-for (i = 0; i < n; i++) {
-  let ball = new Ball(cw / 2, ch / 2, rS[i], rN[i], dX[i], dY[i]);
-  ball.elmDiv.style.opacity = '0';
-  balls.push(ball);
-}
+function start() {
+  const elmTime = document.createElement('p');
+  elmTime.style.lineHeight = ch + 'px';
+  elmTime.style.fontFamily = 'sans-serif';
+  elmTime.style.fontSize = rS[0] * 0.6 + 'px';
+  elmTime.style.margin = '0';
+  elmTime.style.padding = '0';
+  elmTime.style.color = 'black';
+  elmTime.style.textAlign = 'center';
+  nBody.append(elmTime);
+  //中央表示（透過）
+  for (i = 0; i < n; i++) {
+    let ball = new Ball(cw / 2, ch / 2, rS[i], rN[i], dX[i], dY[i]);
+    ball.elmDiv.style.opacity = '0';
+    balls.push(ball);
+  }
 
-//飛散アニメーション
-let dmyElm = document.getElementsByTagName('div');
-for (let i = 0; i < n; i++) {
-  balls[i].elmDiv.animate(
-    {
-      opacity: ['0', '1'],
-      scale: ['0', '1'],
-      rotate: ['0deg', '720deg'],
-      left: [cw / 2 + 'px', rX[i] + 'px'],
-      top: [ch / 2 + 'px', rY[i] + 'px'],
-    },
-    {
-      // fill: 'forwards',
-      duration: 1000,
-      easing: 'ease-out',
-    }
-  ).onfinish = (event) => {
-    // //nBody.removeChild(this)
-    // if (tID === n) {
-    //   clearInterval(timer);
-    // }
-    balls[i].x = rX[i];
-    balls[i].y = rY[i];
-    balls[i].elmDiv.style.opacity = '1';
-    dmyElm[i].style.left = balls[i].x + 'px';
-    dmyElm[i].style.top = balls[i].y + 'px';
-    if (i === n - 1) {
-      timer = setInterval(update, 1);
-      startTime = new Date();
-    }
-  };
+  //飛散アニメーション
+  let dmyElm = document.getElementsByTagName('div');
+  for (let i = 0; i < n; i++) {
+    balls[i].elmDiv.animate(
+      {
+        opacity: ['0', '1'],
+        scale: ['0', '1'],
+        rotate: ['0deg', '720deg'],
+        left: [cw / 2 + 'px', rX[i] + 'px'],
+        top: [ch / 2 + 'px', rY[i] + 'px'],
+      },
+      {
+        // fill: 'forwards',
+        duration: 1000,
+        easing: 'ease-out',
+      }
+    ).onfinish = (event) => {
+      // //nBody.removeChild(this)
+      // if (tID === n) {
+      //   clearInterval(timer);
+      // }
+      balls[i].x = rX[i];
+      balls[i].y = rY[i];
+      balls[i].elmDiv.style.opacity = '1';
+      balls[j].elmDiv.style.left = balls[i].x + 'px';
+      balls[j].elmDiv.style.top = balls[i].y + 'px';
+      if (i === 0) {
+        timer = setInterval(update, 1);
+        startTime = new Date();
+      }
+    };
+  }
 }
-
 //何秒おきに動くかの記述
-// const timer = setInterval(update, 5);
-let timer;
-let startTime;
+// const timer = setInterval(update, 5)
 function update() {
   for (i = 0; i < n; i++) {
     // rX[i] += dX[i];
@@ -341,8 +348,10 @@ function update() {
       }
     }
     // let dmyElm = document.getElementsByTagName('div');
-    dmyElm[j].style.left = balls[j].x + 'px';
-    dmyElm[j].style.top = balls[j].y + 'px';
+    // dmyElm[j].style.left = balls[j].x + 'px';
+    // dmyElm[j].style.top = balls[j].y + 'px';
+    balls[j].elmDiv.style.left = balls[j].x + 'px';
+    balls[j].elmDiv.style.top = balls[j].y + 'px';
   }
   const currentTime = new Date();
   displayTime(currentTime - startTime);
@@ -406,7 +415,6 @@ function displayTime(t) {
 //   }
 // }
 //タッチの判定
-let tID = 0;
 function nClick(e) {
   // this.style.display = 'none';
   // let nID = parseInt(this.className.replace('number-', ''), 10);
