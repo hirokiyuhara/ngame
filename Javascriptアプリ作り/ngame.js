@@ -352,7 +352,12 @@ function displayTime(t) {
   const s = t % 60;
   t = (t - s) / 60;
   const m = t;
-  elmTime.textContent = m + ':' + s + ':' + ms;
+  elmTime.textContent =
+    ('0' + m).slice(-2) +
+    ':' +
+    ('0' + s).slice(-2) +
+    ':' +
+    ('00' + ms).slice(-3);
 }
 
 //表示
