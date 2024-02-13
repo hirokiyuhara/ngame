@@ -63,6 +63,7 @@ class Ball {
     this.elmDiv.style.position = 'absolute';
     this.elmDiv.style.backgroundColor = 'yellow';
     this.elmDiv.style.border = bw + 'px solid red';
+
     this.elmP.style.width = this.s - 2 * bw + 'px';
     this.elmP.style.height = this.s - 2 * bw + 'px';
     this.elmP.style.lineHeight = this.s - 2 * bw + 'px';
@@ -243,6 +244,16 @@ for (i = 0; i < n; i++) {
   //表示呼び出し
   // draw(dmyX, dmyY, dmyS, rN[i]);
 }
+
+const elmTime = document.createElement('p');
+elmTime.style.lineHeight = ch + 'px';
+elmTime.style.fontFamily = 'sans-serif';
+elmTime.style.fontSize = rS[0] * 0.6 + 'px';
+elmTime.style.margin = '0';
+elmTime.style.padding = '0';
+elmTime.style.color = 'black';
+elmTime.style.textAlign = 'center';
+nBody.append(elmTime);
 //中央表示（透過）
 for (i = 0; i < n; i++) {
   let ball = new Ball(cw / 2, ch / 2, rS[i], rN[i], dX[i], dY[i]);
@@ -276,7 +287,8 @@ for (let i = 0; i < n; i++) {
     dmyElm[i].style.left = balls[i].x + 'px';
     dmyElm[i].style.top = balls[i].y + 'px';
     if (i === n - 1) {
-      timer = setInterval(update, 5);
+      timer = setInterval(update, 1);
+      startTime = new Date();
     }
   };
 }
@@ -284,6 +296,7 @@ for (let i = 0; i < n; i++) {
 //何秒おきに動くかの記述
 // const timer = setInterval(update, 5);
 let timer;
+let startTime;
 function update() {
   for (i = 0; i < n; i++) {
     // rX[i] += dX[i];
@@ -330,6 +343,8 @@ function update() {
     dmyElm[j].style.left = balls[j].x + 'px';
     dmyElm[j].style.top = balls[j].y + 'px';
   }
+  const currentTime = new Date();
+  elmTime.textContent = currentTime - startTime + '';
 }
 
 //表示
