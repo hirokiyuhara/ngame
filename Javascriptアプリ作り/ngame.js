@@ -1,4 +1,4 @@
-let Na = 8;
+let Na = 5;
 let n = Na * Na;
 const node_Body = document.getElementsByTagName('body');
 const nBody = node_Body.item(0);
@@ -159,9 +159,71 @@ class Ball {
   }
 }
 
-init();
-start();
+// init();
+// start();
+menu();
 
+//menu画面を表示する
+function menu() {
+  const mw = cw / 2;
+  const mh = ch / 2;
+  const mfs = (mw < mh ? mw : mh) / 10;
+  const elmMenu = document.createElement('div');
+  elmMenu.style.position = 'absolute';
+  elmMenu.style.display = 'block';
+  elmMenu.style.width = mw + 'px';
+  elmMenu.style.height = mh + 'px';
+  elmMenu.style.margin = '0';
+  elmMenu.style.padding = '0';
+  elmMenu.style.left = mw / 2 + 'px';
+  elmMenu.style.top = mh / 2 + 'px';
+  // elmMenu.style.backgroundColor = 'aqua';
+  elmMenu.style.border = '2px solid black';
+  nBody.append(elmMenu);
+
+  //画面上で選択する数字を表示する
+  const pTitle = document.createElement('p');
+  // pTitle.style.position = 'absolute';
+  // pTitle.style.display = 'block';
+  pTitle.style.fontSize = mfs + 'px';
+  pTitle.style.width = mw + 'px';
+  pTitle.style.textAlign = 'center';
+  // pTitle.style.height = mh + 'px';
+  pTitle.style.margin = '10px 0';
+  pTitle.textContent = 'ngame';
+  // pTitle.style.padding = '0';
+  // pTitle.style.left = mw / 2 + 'px';
+  // pTitle.style.top = mh / 2 + 'px';
+  // pTitle.style.border = '2px solid black';
+  elmMenu.append(pTitle);
+
+  //表示された数字を選択するボタン
+  const divInput = document.createElement('div');
+  // divInput.style.position = 'absolute';
+  divInput.style.display = 'block';
+  divInput.style.width = mw * 0.8 + 'px';
+  divInput.style.height = mh * 0.5 + 'px';
+  divInput.style.margin = '0 auto';
+  divInput.style.padding = '0';
+  // divInput.style.left = mw / 2 + 'px';
+  // divInput.style.top = mh / 2 + 'px';
+  // divInput.style.backgroundColor = 'aqua';
+  divInput.style.border = '2px solid black';
+  elmMenu.append(divInput);
+
+  for (i = 0; i < 5; i++) {
+    const lbInputN = document.createElement('label');
+    divInput.append(lbInputN);
+    const inputN = document.createElement('input');
+    inputN.type = 'radio';
+    inputN.name = 'num';
+    lbInputN.append(inputN);
+
+    const spanN = document.createElement('span');
+    spanN.textContent = Na * i + Na;
+    lbInputN.append(spanN);
+  }
+}
 function init() {
   //ダブり数字作成
   for (i = 0; i < n; i++) {
@@ -269,7 +331,6 @@ function start() {
     ball.elmDiv.style.opacity = '0';
     balls.push(ball);
   }
-
   //飛散アニメーション
   let dmyElm = document.getElementsByTagName('div');
   for (let i = 0; i < n; i++) {
