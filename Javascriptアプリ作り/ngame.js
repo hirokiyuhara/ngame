@@ -1,5 +1,4 @@
-let Na = 5;
-let n = Na * Na;
+let n = 5;
 const node_Body = document.getElementsByTagName('body');
 const nBody = node_Body.item(0);
 nBody.style.overflow = 'hidden';
@@ -185,7 +184,7 @@ function menu() {
   const pTitle = document.createElement('p');
   // pTitle.style.position = 'absolute';
   // pTitle.style.display = 'block';
-  pTitle.style.fontSize = mfs + 'px';
+  pTitle.style.fontSize = mfs * 2 + 'px';
   pTitle.style.width = mw + 'px';
   pTitle.style.textAlign = 'center';
   // pTitle.style.height = mh + 'px';
@@ -217,12 +216,26 @@ function menu() {
     const inputN = document.createElement('input');
     inputN.type = 'radio';
     inputN.name = 'num';
+    if (i == 3) {
+      inputN.checked = 'true';
+    }
     lbInputN.append(inputN);
 
     const spanN = document.createElement('span');
-    spanN.textContent = Na * i + Na;
+    spanN.textContent = n * i + n;
     lbInputN.append(spanN);
   }
+
+  const btnStart = document.createElement('button');
+  btnStart.style.display = 'block';
+  btnStart.style.margin = '10px auto';
+  btnStart.style.padding = '3px 10px';
+  btnStart.textContent = 'START';
+  btnStart.onclick = () => {
+    init();
+    start();
+  };
+  elmMenu.append(btnStart);
 }
 function init() {
   //ダブり数字作成
