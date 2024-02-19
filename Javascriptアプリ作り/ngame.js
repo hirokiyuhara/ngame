@@ -177,7 +177,7 @@ function menu() {
   elmMenu.style.padding = '0';
   elmMenu.style.left = mw / 2 + 'px';
   elmMenu.style.top = mh / 2 + 'px';
-  // elmMenu.style.backgroundColor = 'aqua';
+  elmMenu.style.backgroundColor = 'aqua';
   elmMenu.style.border = '2px solid black';
   nBody.append(elmMenu);
 
@@ -185,12 +185,13 @@ function menu() {
   const pTitle = document.createElement('p');
   // pTitle.style.position = 'absolute';
   // pTitle.style.display = 'block';
-  pTitle.style.fontSize = mfs * 2 + 'px';
+  pTitle.style.fontSize = mfs * 2.5 + 'px';
   pTitle.style.width = mw + 'px';
   pTitle.style.textAlign = 'center';
   // pTitle.style.height = mh + 'px';
   pTitle.style.margin = '10px 0';
-  pTitle.textContent = 'ngame';
+  pTitle.style.color = 'yellow';
+  pTitle.textContent = 'Push-game';
   // pTitle.style.padding = '0';
   // pTitle.style.left = mw / 2 + 'px';
   // pTitle.style.top = mh / 2 + 'px';
