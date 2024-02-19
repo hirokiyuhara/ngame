@@ -1,4 +1,4 @@
-let n = 5;
+let n = 25;
 const node_Body = document.getElementsByTagName('body');
 const nBody = node_Body.item(0);
 nBody.style.overflow = 'hidden';
@@ -210,19 +210,20 @@ function menu() {
   divInput.style.border = '2px solid black';
   elmMenu.append(divInput);
 
-  for (i = 0; i < 5; i++) {
+  for (let i = 0; i < 5; i++) {
     const lbInputN = document.createElement('label');
     divInput.append(lbInputN);
     const inputN = document.createElement('input');
     inputN.type = 'radio';
     inputN.name = 'num';
-    if (i == 3) {
-      inputN.checked = 'true';
+    inputN.value = i * 5 + 5;
+    if (i === 3) {
+      inputN.checked = true;
     }
     lbInputN.append(inputN);
 
     const spanN = document.createElement('span');
-    spanN.textContent = n * i + n;
+    spanN.textContent = i * 5 + 5;
     lbInputN.append(spanN);
   }
 
@@ -232,6 +233,22 @@ function menu() {
   btnStart.style.padding = '3px 10px';
   btnStart.textContent = 'START';
   btnStart.onclick = () => {
+    elmMenu.animate(
+      [
+        { opacity: '1', transform: 'scale(1) ' },
+        { opacity: '0', transform: 'scale(0.5) ' },
+      ],
+      {
+        fill: 'forwards',
+        duration: 500,
+      }
+    );
+    elmRadio = document.getElementsByName('num');
+    for (i = 0; i < elmRadio.length; i++) {
+      if (elmRadio[i].checked === true) {
+        n = parseInt(elmRadio[i].value, 10);
+      }
+    }
     init();
     start();
   };
@@ -368,8 +385,8 @@ function start() {
       balls[i].x = rX[i];
       balls[i].y = rY[i];
       balls[i].elmDiv.style.opacity = '1';
-      balls[j].elmDiv.style.left = balls[i].x + 'px';
-      balls[j].elmDiv.style.top = balls[i].y + 'px';
+      balls[i].elmDiv.style.left = balls[i].x + 'px';
+      balls[i].elmDiv.style.top = balls[i].y + 'px';
       if (i === 0) {
         timer = setInterval(update, 1);
         startTime = new Date();
