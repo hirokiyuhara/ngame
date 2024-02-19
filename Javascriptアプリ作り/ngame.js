@@ -7,7 +7,7 @@ const cw = document.documentElement.clientWidth;
 const ch = document.documentElement.clientHeight;
 //枠の大きさを画面サイズに連動させる
 const cb = cw < ch ? cw : ch; //三項演算子
-const s = cb / (1.3 * (Math.sqrt(n) + 1) - 1);
+let s = cb / (1.3 * (Math.sqrt(n) + 1) - 1);
 const bw = 1;
 // let g = s * m;
 // //縦方向に対して画面中央に表示させる
@@ -210,20 +210,20 @@ function menu() {
   divInput.style.border = '2px solid black';
   elmMenu.append(divInput);
 
-  for (let i = 0; i < 5; i++) {
+  for (let j = 0; j < 5; j++) {
     const lbInputN = document.createElement('label');
     divInput.append(lbInputN);
     const inputN = document.createElement('input');
     inputN.type = 'radio';
     inputN.name = 'num';
-    inputN.value = i * 5 + 5;
-    if (i === 3) {
+    inputN.value = j * 5 + 5;
+    if (j === 3) {
       inputN.checked = true;
     }
     lbInputN.append(inputN);
 
     const spanN = document.createElement('span');
-    spanN.textContent = i * 5 + 5;
+    spanN.textContent = inputN.value;
     lbInputN.append(spanN);
   }
 
@@ -244,9 +244,10 @@ function menu() {
       }
     );
     elmRadio = document.getElementsByName('num');
-    for (i = 0; i < elmRadio.length; i++) {
-      if (elmRadio[i].checked === true) {
-        n = parseInt(elmRadio[i].value, 10);
+    for (j = 0; j < elmRadio.length; j++) {
+      if (elmRadio[j].checked === true) {
+        n = parseInt(elmRadio[j].value, 10);
+        s = cb / (1.3 * (Math.sqrt(n) + 1) - 1);
       }
     }
     init();
@@ -256,7 +257,7 @@ function menu() {
 }
 function init() {
   //ダブり数字作成
-  for (i = 0; i < n; i++) {
+  for (j = 0; j < n; j++) {
     const dmyN = Math.floor(Math.random() * n);
     rN.push(dmyN + 1);
   }
@@ -279,7 +280,7 @@ function init() {
   rN.sort((a, b) => a - b);
 
   //速度設定
-  for (i = 0; i < n; i++) {
+  for (j = 0; j < n; j++) {
     const dmyS = Math.random() / 5 + 0.2;
     const dmyA = Math.random() * 2 * Math.PI;
     const dmyDX = dmyS * Math.cos(dmyA);
@@ -356,21 +357,21 @@ function start() {
   elmTime.style.textAlign = 'center';
   nBody.append(elmTime);
   //中央表示（透過）
-  for (i = 0; i < n; i++) {
-    let ball = new Ball(cw / 2, ch / 2, rS[i], rN[i], dX[i], dY[i]);
+  for (j = 0; j < n; j++) {
+    let ball = new Ball(cw / 2, ch / 2, rS[j], rN[j], dX[j], dY[j]);
     ball.elmDiv.style.opacity = '0';
     balls.push(ball);
   }
   //飛散アニメーション
   let dmyElm = document.getElementsByTagName('div');
-  for (let i = 0; i < n; i++) {
-    balls[i].elmDiv.animate(
+  for (let j = 0; j < n; j++) {
+    balls[j].elmDiv.animate(
       {
         opacity: ['0', '1'],
         scale: ['0', '1'],
         rotate: ['0deg', '720deg'],
-        left: [cw / 2 + 'px', rX[i] + 'px'],
-        top: [ch / 2 + 'px', rY[i] + 'px'],
+        left: [cw / 2 + 'px', rX[j] + 'px'],
+        top: [ch / 2 + 'px', rY[j] + 'px'],
       },
       {
         // fill: 'forwards',
@@ -382,12 +383,12 @@ function start() {
       // if (tID === n) {
       //   clearInterval(timer);
       // }
-      balls[i].x = rX[i];
-      balls[i].y = rY[i];
-      balls[i].elmDiv.style.opacity = '1';
-      balls[i].elmDiv.style.left = balls[i].x + 'px';
-      balls[i].elmDiv.style.top = balls[i].y + 'px';
-      if (i === 0) {
+      balls[j].x = rX[j];
+      balls[j].y = rY[j];
+      balls[j].elmDiv.style.opacity = '1';
+      balls[j].elmDiv.style.left = balls[j].x + 'px';
+      balls[j].elmDiv.style.top = balls[j].y + 'px';
+      if (j === 0) {
         timer = setInterval(update, 1);
         startTime = new Date();
       }
@@ -397,10 +398,10 @@ function start() {
 //何秒おきに動くかの記述
 // const timer = setInterval(update, 5)
 function update() {
-  for (i = 0; i < n; i++) {
-    // rX[i] += dX[i];
-    // rY[i] += dY[i];
-    balls[i].move();
+  for (j = 0; j < n; j++) {
+    // rX[j] += dX[j];
+    // rY[j] += dY[j];
+    balls[j].move();
   }
   //画面の上下左右への衝突
   for (j = 0; j < n; j++) {
