@@ -27,6 +27,7 @@ let balls = [];
 let timer;
 let startTime;
 let tID = 0;
+let elmTime;
 //タッチの検出
 let supportTouch = 'ontouchend' in document;
 let EVENTNAME_TOUCHSTART = supportTouch ? 'touchstart' : 'mousedown';
@@ -347,7 +348,8 @@ function init() {
 }
 
 function start() {
-  const elmTime = document.createElement('p');
+  elmTime = document.createElement('p');
+  elmTime.style.height = ch + 'px';
   elmTime.style.lineHeight = ch + 'px';
   elmTime.style.fontFamily = 'sans-serif';
   elmTime.style.fontSize = rS[0] * 0.6 + 'px';
