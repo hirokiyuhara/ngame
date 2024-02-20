@@ -218,7 +218,19 @@ function menu() {
     const inputN = document.createElement('input');
     inputN.type = 'radio';
     inputN.name = 'num';
-    inputN.value = j * 5 + 5;
+    // inputN.value = j * n + 5;
+    if (j === 0) {
+      inputN.value = 5; // 最初の値を5に設定
+    } else if (j === 1) {
+      inputN.value = 30; // 2番目の値を30に設定
+    } else if (j === 2) {
+      inputN.value = 50; // 3番目の値を50に設定
+    } else if (j === 3) {
+      inputN.value = 80; // 4番目の値を80に設定
+    } else if (j === 4) {
+      inputN.value = 100; // 5番目の値を100に設定
+    }
+
     if (j === 3) {
       inputN.checked = true;
     }
@@ -249,6 +261,7 @@ function menu() {
     for (j = 0; j < elmRadio.length; j++) {
       if (elmRadio[j].checked === true) {
         n = parseInt(elmRadio[j].value, 10);
+        console.log(n);
         s = cb / (1.3 * (Math.sqrt(n) + 1) - 1);
       }
     }
